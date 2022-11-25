@@ -1,0 +1,194 @@
+/* .center {
+}
+ */
+.top {
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+    margin-top: 10px;
+    margin-left: 2rem;
+}
+
+.header-wrap--home {
+    display: block;
+    width: 100%;
+    max-width: 1400px;
+    box-sizing: border-box;
+    padding: 23px;
+    padding-bottom: 0;
+    margin: 0 auto;
+    height: auto;
+}
+
+.site-wrapper--home {
+    height: 100%;
+}
+
+.body--home, .site-wrapper--home {
+    /*  background: #ffd89b;
+    background: -webkit-linear-gradient(to right, #265059, #70a7cb);
+    background: linear-gradient(to right, #265059, #70a7cb); */
+    background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+    height: 100vh;
+    /*  min-height: 100vh; */
+}
+
+.site-wrapper {
+    width: 100%;
+    overflow-y: auto;
+}
+
+.mat-table {
+    width: 95%;
+    margin-bottom: 120px;
+    margin-left: 30px;
+    background-color: rgba(0, 0, 0, 0.0) !important;
+}
+
+.mat-header-cell {
+    background-color: #2c4e6e;
+    color: white;
+
+}
+
+
+.mat-header-cell:not(:first-child) {
+    padding-left: 0;
+}
+
+/* Style just the text in the header */
+.mat-header-cell span {
+    font-weight: 600;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.5px;
+}
+
+/* Round the top table corners */
+.mat-header-cell:first-child {
+    border-top-left-radius: 2.5px;
+}
+
+.mat-header-cell:last-child {
+    border-top-right-radius: 2.5px;
+}
+
+.mat-header-row {
+    height: 3em;
+}
+
+.type-column {
+    width: 15%;
+    padding-right: 3rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.name-column {
+    width: 30%;
+    padding-right: 3rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.amount-column {
+    width: 15%;
+    padding-right: 3rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.status-column {
+    width: 15%;
+    padding-right: 3rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.date-column {
+    width: 20%;
+    padding-right: 3rem;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.state-column {
+    width: 5%;
+}
+
+/* ---------------------------------------------------------- */
+
+/* Row styles */
+/* ---------------------------------------------------------- */
+/* .mat-row:nth-child(2n) {
+    background-color: #e5e6f5;
+} */
+
+/* ---------------------------------------------------------- */
+
+/* Cell styles */
+/* ---------------------------------------------------------- */
+.state-cell {
+    text-align: right;
+}
+
+.mat-cell {
+    border: none;
+}
+
+.green-svg {
+    fill: #6dd400;
+}
+
+.gray-svg {
+    fill: #b2b4b6;
+}
+
+.container {
+    padding-top: 50px;
+    padding-bottom: 10px;
+    color: #405065;
+}
+
+.search-hero {
+    max-width: 500px;
+    padding-bottom: 50px;
+    margin: auto;
+}
+
+.container {
+    margin-top: 200px
+}
+
+.microphone {
+    border-top-right-radius: 32px !important;
+    border-bottom-right-radius: 32px !important;
+    background-color: #fff
+}
+
+.google {
+    border-top-left-radius: 32px !important;
+    border-bottom-left-radius: 32px !important;
+    background-color: #fff
+}
+
+.input-group-prepend {
+    margin-right: -2px !important
+}
+
+.input-group-append {
+    margin-left: -2px !important
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ced4da;
+    outline: 0;
+    box-shadow: 0 0 0 0 !important
+}
+
+.form-control {
+    border-right: 0 !important;
+    border-left: 0 !important
+}

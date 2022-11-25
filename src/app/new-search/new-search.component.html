@@ -1,0 +1,123 @@
+<div class="bg bg-image justify-content-center align-items-center" *ngIf="!openNewTab">
+    <div class="header-wrap--home  js-header-wrap m-4">
+        <button *ngIf="showResult" (click)="showResult = false" class="btn btn-primary backBtn btn-lg pull-left">Go
+            Back</button>
+        <!-- <img *ngIf="showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:60px" class="float-right mx-4" /> -->
+    </div>
+    <div class="bootstrap snippets bootdey" [ngClass]="{'container': !showResult, 'top':showResult}">
+        <div class="row">
+            <div class="col-md-8 " style="margin-left: 10rem;">
+                <div class="ibox float-e-margins">
+                    <!-- <img *ngIf="!showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:150px; margin-left: auto;
+                    margin-right: auto;display: flex; margin-bottom: -80px" /> -->
+                    <div class="ibox-content">
+                        <div class="mask d-flex align-items-center h-100" *ngIf="!showResult">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                                        <div class="card mb- shadow-lg p-3 mb-5 bg-white rounded">
+                                            <div class="card-body p-2">
+                                                <div class="input-group input-group-lg">
+                                                    <input type="text" class="form-control form-control-lg rounded"
+                                                        placeholder="Search for ...." aria-label="Type Keywords"
+                                                        aria-describedby="basic-addon2" [(ngModel)]="query"
+                                                        (keyup.enter)="search()" />
+                                                    <button (click)="search()" type="submit" [disabled]="query === ''"
+                                                        class="btn btn-outline-info btn-lg"><i class="fa fa-search"
+                                                            style="font-size:20px"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="showResult">
+                            <div class="search-form">
+                                <form action="#" method="get">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search for..." name="search"
+                                            class="form-control input-lg" [(ngModel)]="query" (keyup.enter)="search()">
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-lg btn-primary" type="submit"
+                                                (keyup.enter)="search()" [disabled]="query === ''" (click)="search()">
+                                                Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <h3 class="m-3">
+                                <span *ngIf="queryTerm !== ''">{{count}} results found for : &nbsp;</span>
+                                <span class="text-navy" *ngIf="queryTerm !== ''">"{{queryTerm}}"
+                                </span>
+                            </h3>
+                            <form>
+                                <div
+                                    *ngFor="let link of searchResult | paginate: { itemsPerPage: 10, currentPage: p} ;let i=index;">
+                                    <div class="hr-line-dashed" *ngIf="i != 0"></div>
+                                    <!-- <button type="button" class="btn_img">
+                                        <img src="/assets/like.png" width="18" height="18">
+                                    </button>
+                                    <button type="button" class="btn_img">
+                                        <img src="../../assets/thumb-down.png" width="18" height="18">
+                                    </button> -->
+                                    <!-- <input type="checkbox" (change)="onChange(link.doc_id, $event)"> -->
+                                    <div class="search-result card mb-6 shadow-lg p-3 mb-5 bg-white rounded"
+                                        (click)="openWindow(link); openNewTab = true" style="cursor:pointer">
+                                        <h3 class="mx-3 mt-2"><a target="#">
+                                                {{link.doc_id}}</a></h3>
+                                        <!-- <p class="mx-3" [innerHTML]="link.topicContent | highlightSearch:query">
+                                        {{link.topicContent}}</p> -->
+                                        <!-- <p class="mx-3" appHighlight [content]="link.text" [searchTerm]="query"
+                                        [caseSensitive]="true">
+                                    </p> -->
+                                        <p><span>&nbsp;KeyPhrases: </span>
+                                            <span>{{link.KeyList}}</span>&nbsp;
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="text-center">
+                                    <div class="btn-group pt-3" style="font-weight:500;color:white">
+                                        <!-- <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                                        [showFirstLastButtons]="true" [length]="totalSize"
+                                        (page)="pageEvent = handlePage($event)" [pageIndex]="currentPage">
+                                    </mat-paginator> -->
+                                        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="openNewTab">
+    <div class="bg bg-image" style="height:605px!important">
+        <div class="header-wrap--home  js-header-wrap m-4">
+            <button (click)="openNewTab = false" class="btn btn-primary backBtn btn-lg pull-left">Go
+                Back</button>
+            <!-- <img *ngIf="showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:60px"
+                class="float-right mx-4" /> -->
+        </div>
+        <div class="bootstrap snippets bootdey" [ngClass]="{'container': !showResult, 'top':showResult}">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-content">
+                            <div class="card p-4">
+                                <h2 style="
+                                margin-left: auto;
+                                margin-right: auto;">{{title}}</h2>
+                                <p>{{content}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
