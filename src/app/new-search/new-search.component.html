@@ -1,12 +1,12 @@
 <div class="bg bg-image justify-content-center align-items-center" *ngIf="!openNewTab">
-    <div class="header-wrap--home  js-header-wrap m-4">
+    <!-- <div class="header-wrap--home    js-header-wrap m-4">
         <button *ngIf="showResult" (click)="showResult = false" class="btn btn-primary backBtn btn-lg pull-left">Go
             Back</button>
-        <!-- <img *ngIf="showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:60px" class="float-right mx-4" /> -->
-    </div>
+        <img *ngIf="showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:60px" class="float-right mx-4" />
+    </div> -->
     <div class="bootstrap snippets bootdey" [ngClass]="{'container': !showResult, 'top':showResult}">
         <div class="row">
-            <div class="col-md-8 " style="margin-left: 10rem;">
+            <div class="col-md-7 " style="margin-left: 5rem;">
                 <div class="ibox float-e-margins">
                     <!-- <img *ngIf="!showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:150px; margin-left: auto;
                     margin-right: auto;display: flex; margin-bottom: -80px" /> -->
@@ -62,13 +62,17 @@
                                     <button type="button" class="btn_img">
                                         <img src="../../assets/thumb-down.png" width="18" height="18">
                                     </button> -->
+                                    <button style="background:none;border: none;" (click)="markReleIrrele($event,link)"><img class="likedislikeimage" src="../../assets/images/like.png"/></button>
+                                    <button style="background:none;border: none;" (click)="markReleIrrele($event,link)"><img class="likedislikeimage" src="../../assets/images/thumb-down.png"/></button>
                                     <!-- <input type="checkbox" (change)="onChange(link.doc_id, $event)"> -->
                                     <div class="search-result card mb-6 shadow-lg p-3 mb-5 bg-white rounded"
                                         (click)="openWindow(link); openNewTab = true" style="cursor:pointer">
                                         <h3 class="mx-3 mt-2"><a target="#">
                                                 {{link.doc_id}}</a></h3>
-                                        <!-- <p class="mx-3" [innerHTML]="link.topicContent | highlightSearch:query">
-                                        {{link.topicContent}}</p> -->
+                                        <!-- <p class="mx-3" [innerHTML]="link.summary | highlightSearch:query">
+                                        {{link.summary}}</p> -->
+                                        <p class="mx-3">
+                                            {{link.summary}}</p>
                                         <!-- <p class="mx-3" appHighlight [content]="link.text" [searchTerm]="query"
                                         [caseSensitive]="true">
                                     </p> -->

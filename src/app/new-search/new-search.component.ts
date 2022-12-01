@@ -66,4 +66,8 @@ export class NewSearchComponent implements OnInit {
   submit(){
 
   }
+
+  public markReleIrrele(event:any, item:any){
+    console.log(event, item)
+  }
 }
