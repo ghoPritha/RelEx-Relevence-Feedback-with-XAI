@@ -17,7 +17,7 @@ export class NewSearchComponent implements OnInit {
   public currentPage = 0;
   public totalSize = 0;
   showResult: boolean = false;
-  searchResult: any[] = [];
+  searchResult: ResultList[] = [];
   // result : SearchResponse = {} as SearchResponse;
   count: number = 0;
   apiBaseUrl: string = "";
@@ -25,7 +25,7 @@ export class NewSearchComponent implements OnInit {
   openNewTab: boolean = false;
   title: string | undefined;
   content: string | undefined;
-  synonym: string[] = [];
+  releIrrevenatList: any[] = [];
   queryTerm: any;
   constructor(private appConfigService: AppConfigService, private newSearchService: NewSearchService) { }
 
@@ -40,7 +40,7 @@ export class NewSearchComponent implements OnInit {
       this.searchResult = [];
       this.newSearchService.sendQuery(this.query).subscribe(response => {
         console.log("response", response);
-        this.p=1;
+        this.p = 1;
         this.searchResult = response;
         // this.searchResult = (<SearchResponse>response).resultList;
         // this.count = (<SearchResponse>response).count;
@@ -58,16 +58,50 @@ export class NewSearchComponent implements OnInit {
     this.content = link.text;
   }
 
-  onChange(docId: any, isChecked: any): void{
+  onChange(docId: any, isChecked: any): void {
     console.log(docId, isChecked.target.checked)
-    
-  }
-
-  submit(){
 
   }
 
-  public markReleIrrele(event:any, item:any){
-    console.log(event, item)
+  submit() {
+    console.log("response", this.releIrrevenatList);
+
+    this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
+      console.log("response", response);
+      this.p = 1;
+    },
+      err => console.error(err),
+    );
   }
+
+  public markReleIrrele(event: any, item: any, relevance: boolean) {
+    console.log(item, relevance)
+    let selectedDoc = {
+      doc_id: item.doc_id,
+      relevant: relevance
+    };
+    console.log(this.releIrrevenatList.some((item) => item.doc_id == selectedDoc.doc_id))
+    if (this.releIrrevenatList.some((item) => item.doc_id == selectedDoc.doc_id)) {
+      let itemIndex = this.releIrrevenatList.findIndex(item => item.doc_id == selectedDoc.doc_id);
+      this.releIrrevenatList[itemIndex] = selectedDoc;
+    }
+    else {
+      this.releIrrevenatList.forEach
+      this.releIrrevenatList.push(selectedDoc)
+    }
+
+    console.log('releIrrevenatList', this.releIrrevenatList)
+  }
+
+  // public markIrrele(event:any, item:any){
+  //   let irrelevantDoc={
+  //     doc_id : item.doc_id,
+  //     relevant: false
+  //   };
+  //   this.releIrrevenatList.push(irrelevantDoc)
+  //   console.log(event, item)
+
+  // }
+
+
 }

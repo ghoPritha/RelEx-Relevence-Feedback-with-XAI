@@ -32,8 +32,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="showResult">
-                            <div class="search-form">
+                        <div *ngIf="showResult" class="row">
+                            <div class="search-form col-6">
                                 <form action="#" method="get">
                                     <div class="input-group">
                                         <input type="text" placeholder="Search for..." name="search"
@@ -46,6 +46,12 @@
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+                            <div class="search-form  col-6">
+                                <button class="btn btn-lg btn-primary" type="submit" (keyup.enter)="submit()"
+                                    [disabled]="query === ''" (click)="submit()">
+                                    Submit
+                                </button>
                             </div>
                             <h3 class="m-3">
                                 <span *ngIf="queryTerm !== ''">{{count}} results found for : &nbsp;</span>
@@ -62,8 +68,12 @@
                                     <button type="button" class="btn_img">
                                         <img src="../../assets/thumb-down.png" width="18" height="18">
                                     </button> -->
-                                    <button style="background:none;border: none;" (click)="markReleIrrele($event,link)"><img class="likedislikeimage" src="../../assets/images/like.png"/></button>
-                                    <button style="background:none;border: none;" (click)="markReleIrrele($event,link)"><img class="likedislikeimage" src="../../assets/images/thumb-down.png"/></button>
+                                    <button style="background:none;border: none;"
+                                        (click)="markReleIrrele($event,link, true)"><img class="likedislikeimage"
+                                            src="../../assets/images/like.png" /></button>
+                                    <button style="background:none;border: none;"
+                                        (click)="markReleIrrele($event,link, false)"><img class="likedislikeimage"
+                                            src="../../assets/images/thumb-down.png" /></button>
                                     <!-- <input type="checkbox" (change)="onChange(link.doc_id, $event)"> -->
                                     <div class="search-result card mb-6 shadow-lg p-3 mb-5 bg-white rounded"
                                         (click)="openWindow(link); openNewTab = true" style="cursor:pointer">
