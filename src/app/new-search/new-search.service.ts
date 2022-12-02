@@ -24,8 +24,8 @@ export class NewSearchService {
 
   sendQuery(query: string): Observable<any> {
     let queryString = new HttpParams().set('searchString', query);
-    // return this.http.get('http://127.0.0.1:5000/query', { params: queryString });
-    return this.http.get("./assets/keyPhrase.json");
+    return this.http.get('http://127.0.0.1:5000/query', { params: queryString });
+    // return this.http.get("./assets/keyPhrase.json");
 
   }
 
