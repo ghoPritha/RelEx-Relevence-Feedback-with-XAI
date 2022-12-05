@@ -23,28 +23,30 @@ export class NewSearchService {
   }
 
   sendQuery(query: string): Observable<any> {
+    console.log(query)
     let queryString = new HttpParams().set('searchString', query);
+    console.log(this.http.get('http://127.0.0.1:5000/query', { params: queryString }))
     return this.http.get('http://127.0.0.1:5000/query', { params: queryString });
     // return this.http.get("./assets/keyPhrase.json");
 
   }
 
-  fetchSearchResults(): Observable<any> {
-    // this.http.get('http://127.0.0.1:5000').subscribe(data => {
-    //   this.employeeData = data as JSON;
-    //   console.log(this.employeeData);
-    // })
-    // return this.employeeData
-    return this.http.get("./assets/keyPhrase.json");
+  // fetchSearchResults(): Observable<any> {
+  //   // this.http.get('http://127.0.0.1:5000').subscribe(data => {
+  //   //   this.employeeData = data as JSON;
+  //   //   console.log(this.employeeData);
+  //   // })
+  //   // return this.employeeData
+  //   return this.http.get("./assets/keyPhrase.json");
 
-  }
+  // }
 
   sendFeedback(feedbackList: any): Observable<any> {
     let feedbacksList = new HttpParams().set('feedbackList', feedbackList);
     return this.http.post<Observable<any>>('http://127.0.0.1:5000/feedback', feedbacksList, httpOptions )
-    .pipe(
-      catchError(this.handleError('addHero', feedbackList))
-    );
+    // .pipe(
+    //   catchError(this.handleError('addHero', feedbackList))
+    // );
 
   }
   handleError(arg0: string, hero: any): (err: any, caught: Observable<Observable<any>>) => import("rxjs").ObservableInput<any> {
