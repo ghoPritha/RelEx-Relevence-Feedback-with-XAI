@@ -15,16 +15,17 @@ export class NewSearchService {
   employeeData: any;
 
   constructor(private http: HttpClient) { }
-  sayHi() {
-    this.http.get('http://127.0.0.1:5002/').subscribe(data => {
-      this.serverData = data as JSON;
-      console.log(this.serverData);
-    })
-  }
+  // sayHi() {
+  //   this.http.get('http://127.0.0.1:5002/').subscribe(data => {
+  //     this.serverData = data as JSON;
+  //     console.log(this.serverData);
+  //   })
+  // }
 
   sendQuery(query: string): Observable<any> {
     let queryString = new HttpParams().set('searchString', query);
-    return this.http.get('http://127.0.0.1:5000/query', { params: queryString });
+    // console.log('this.http.get'6
+    return this.http.get('http://192.168.0.12:5021/query', { params: queryString });
     // return this.http.get("./assets/keyPhrase.json");
 
   }
@@ -42,7 +43,7 @@ export class NewSearchService {
   sendFeedback(feedbackList: any): Observable<any> {
     let feedbacksList = new HttpParams().set('feedbackList', feedbackList);
     console.log('feedbackList', feedbackList)
-    return this.http.post('http://127.0.0.1:5000/feedback', JSON.stringify(feedbacksList), httpOptions )
+    return this.http.post('http://192.168.0.12:5021/feedback', JSON.stringify(feedbacksList), httpOptions )
     // return this.http.request(
     //   'POST',
     //   'http://127.0.0.1:5000/feedback',

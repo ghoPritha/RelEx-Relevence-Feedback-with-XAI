@@ -54,8 +54,8 @@ export class NewSearchComponent implements OnInit {
 
   openWindow(link: ResultList): void {
     this.openNewTab = true;
-    this.title = link.doc_id;
-    this.content = link.text;
+    this.title = link.docno;
+    this.content = link.abstract;
   }
 
   onChange(docId: any, isChecked: any): void {

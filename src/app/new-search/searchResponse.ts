@@ -1,6 +1,7 @@
 export interface ResultList {
-    doc_id: string;
-    text: string;
+    docno: string;
+    title: string;
+    abstract: string;
     summary: string;
     KeyList: string;
 }
