@@ -77,12 +77,12 @@ export class NewSearchComponent implements OnInit {
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     console.log(item, relevance)
     let selectedDoc = {
-      doc_id: item.doc_id,
+      docno: item.docno,
       relevant: relevance
     };
-    console.log(this.releIrrevenatList.some((item) => item.doc_id == selectedDoc.doc_id))
-    if (this.releIrrevenatList.some((item) => item.doc_id == selectedDoc.doc_id)) {
-      let itemIndex = this.releIrrevenatList.findIndex(item => item.doc_id == selectedDoc.doc_id);
+    console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
+    if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
+      let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
       this.releIrrevenatList[itemIndex] = selectedDoc;
     }
     else {
@@ -95,7 +95,7 @@ export class NewSearchComponent implements OnInit {
 
   // public markIrrele(event:any, item:any){
   //   let irrelevantDoc={
-  //     doc_id : item.doc_id,
+  //     docno : item.docno,
   //     relevant: false
   //   };
   //   this.releIrrevenatList.push(irrelevantDoc)
