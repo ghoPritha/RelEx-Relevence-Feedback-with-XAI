@@ -27,6 +27,7 @@ export class NewSearchComponent implements OnInit {
   content: string | undefined;
   releIrrevenatList: any[] = [];
   queryTerm: any;
+  releIrreleselected: boolean = false;
   constructor(private appConfigService: AppConfigService, private newSearchService: NewSearchService) { }
 
   ngOnInit(): void {
@@ -76,6 +77,7 @@ export class NewSearchComponent implements OnInit {
 
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     console.log(item, relevance)
+    this.releIrreleselected = true;
     let selectedDoc = {
       docno: item.docno,
       relevant: relevance

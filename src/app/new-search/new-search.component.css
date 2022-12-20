@@ -250,3 +250,24 @@ body {
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
   }
+
+
+  .likedislikeimage{
+    width: 2rem;
+    height: 2rem; 
+  }
+
+  .likedislikeimage:focus { 
+    outline: none;
+    box-shadow: none;
+ }
+
+  .btnsUnclicked{
+    background:none;
+    border: none;
+  }
+
+  .btnsclicked{
+    background:none;
+    border: none;
+  }
