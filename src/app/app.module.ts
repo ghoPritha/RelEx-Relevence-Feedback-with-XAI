@@ -16,8 +16,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner' 
 import { MatProgressBarModule } from '@angular/material/progress-bar' 
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
+
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CustomHttpInterceptorService } from './custom-http-interceptor.service';
+import { MatButtonModule } from '@angular/material/button';
 
 
 const appRoutes: Routes = [
@@ -45,7 +48,9 @@ const appRoutes: Routes = [
     HttpClientModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule,
+    MatButtonModule
   ],
   exports: [RouterModule],
   providers: [

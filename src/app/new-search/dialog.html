@@ -1,13 +1,9 @@
-<h1 mat-dialog-title>Hi {{data.name}}</h1>
+<!-- <h1 mat-dialog-title>Hi {{data.name}}</h1> -->
 <div mat-dialog-content>
   <p>Hey</p>
-  <mat-form-field appearance="fill">
-    <mat-label>You have selected all the documents as <span *ngIf="relevant">Relevant</span>
-    <span *ngIf="irrelevant">Irrelevant</span></mat-label>
-    <input matInput [(ngModel)]="data.animal">
-  </mat-form-field>
+  <label>You have selected all the documents as {{data.name}}</label>
 </div>
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()">Ok</button>
 </div>

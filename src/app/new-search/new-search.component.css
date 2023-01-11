@@ -304,3 +304,17 @@ body {
     background: url('//upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Phi_fenomeni.gif/50px-Phi_fenomeni.gif') 
                 50% 50% no-repeat rgb(249,249,249);
   }
+
+  .mat-progress-spinner circle, .mat-spinner circle {
+    width: 20%;
+    height: 20%;
+    position: fixed;
+    top: 40%;
+    left: calc(50% - 10%);
+    z-index: 100;
+    background-image: url(../../assets/images/sand-clock.png);
+    background-repeat: no-repeat;
+    background-size: 97%;
+    animation: bouncing 0.4s cubic-bezier(0.1, 0.25, 0.1, 1) 0s infinite
+      alternate both;
+  }

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfigService } from '../app-config.service';
 import { SpinnerService } from '../spinner/spinner.service';
 import { NewSearchService } from './new-search.service';
@@ -28,8 +29,11 @@ export class NewSearchComponent implements OnInit {
   content: string | undefined;
   releIrrevenatList: any[] = [];
   queryTerm: any;
-  releIrreleselected: boolean = false;
-  constructor(public spinnerService: SpinnerService,private appConfigService: AppConfigService, private newSearchService: NewSearchService) { 
+  // releIrreleselected: boolean = false;
+  allSelected: boolean  = false
+  allSelectedLabel: any;
+  disableSubmit: boolean = true;
+  constructor(public dialog: MatDialog, public spinnerService: SpinnerService,private appConfigService: AppConfigService, private newSearchService: NewSearchService) { 
     console.log(spinnerService.visibility.value)
   }
 
@@ -55,7 +59,16 @@ export class NewSearchComponent implements OnInit {
       );
     }
   }
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
+      data: {name: this.allSelectedLabel},
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      // this.animal = result;
+    });
+  }
   openWindow(link: ResultList): void {
     this.openNewTab = true;
     this.title = link.docno;
@@ -67,9 +80,18 @@ export class NewSearchComponent implements OnInit {
 
   }
 
+  // handleChange($event: Event) {
+  //   console.log($event, $event.target)
+  //   this.allSelected = true
+  //   this.allSelectedLabel =  $event.target
+  // // throw new Error('Method not implemented.');
+  // }
+
   submit() {
     console.log("response", this.releIrrevenatList);
-
+    if(this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant'){
+      this.openDialog();
+    }
     this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
       console.log("response", response);
       this.p = 1;
@@ -80,13 +102,13 @@ export class NewSearchComponent implements OnInit {
 
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     console.log(item, relevance)
-    this.releIrreleselected = true;
+    // this.releIrreleselected = true;
     let selectedDoc = {
       docno: item.docno,
       item: item,
       relevant: relevance
     };
-    console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
+    // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
     if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
       let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
       this.releIrrevenatList[itemIndex] = selectedDoc;
@@ -95,8 +117,10 @@ export class NewSearchComponent implements OnInit {
       this.releIrrevenatList.forEach
       this.releIrrevenatList.push(selectedDoc)
     }
-
-    console.log('releIrrevenatList', this.releIrrevenatList)
+    if(this.releIrrevenatList.length > 3){
+      this.disableSubmit = false;
+    }
+    // console.log('releIrrevenatList', this.releIrrevenatList)
   }
 
   // public markIrrele(event:any, item:any){
@@ -110,4 +134,19 @@ export class NewSearchComponent implements OnInit {
   // }
 
 
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog.html',
+})
+export class DialogOverviewExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

@@ -27,6 +27,7 @@ export class NewSearchService {
     let queryString = new HttpParams().set('searchString', query);
     // console.log('this.http.get'6
     return this.http.get('http://127.0.0.1:5025/query', { params: queryString });
+    // return this.http.get("./assets/images/like.png");
     // return this.http.get("./assets/keyPhrase.json");
 
   }
