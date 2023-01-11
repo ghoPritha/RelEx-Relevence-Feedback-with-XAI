@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AppConfigService } from '../app-config.service';
+import { SpinnerService } from '../spinner/spinner.service';
 import { NewSearchService } from './new-search.service';
 import { ResultList } from './searchResponse';
 
@@ -28,7 +29,9 @@ export class NewSearchComponent implements OnInit {
   releIrrevenatList: any[] = [];
   queryTerm: any;
   releIrreleselected: boolean = false;
-  constructor(private appConfigService: AppConfigService, private newSearchService: NewSearchService) { }
+  constructor(public spinnerService: SpinnerService,private appConfigService: AppConfigService, private newSearchService: NewSearchService) { 
+    console.log(spinnerService.visibility.value)
+  }
 
   ngOnInit(): void {
 
@@ -80,6 +83,7 @@ export class NewSearchComponent implements OnInit {
     this.releIrreleselected = true;
     let selectedDoc = {
       docno: item.docno,
+      item: item,
       relevant: relevance
     };
     console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))

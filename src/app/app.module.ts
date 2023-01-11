@@ -4,16 +4,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SearchPageComponent } from './search-page/search-page.component';
 import { NewSearchComponent } from './new-search/new-search.component';
 import { NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewSearchService } from './new-search/new-search.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HighlightSearchPipe } from './new-search/highlightPipe';
 import { HighlightDirective } from './highlight.directive';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner' 
+import { MatProgressBarModule } from '@angular/material/progress-bar' 
+import {MatDialogModule} from '@angular/material/dialog';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { CustomHttpInterceptorService } from './custom-http-interceptor.service';
+
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -22,10 +27,10 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    SearchPageComponent,
     HighlightSearchPipe,
     NewSearchComponent,
-    HighlightDirective
+    HighlightDirective,
+    SpinnerComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -37,11 +42,18 @@ const appRoutes: Routes = [
     FontAwesomeModule,
     NgxPaginationModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatDialogModule
   ],
   exports: [RouterModule],
   providers: [
-  NewSearchService ],
+  NewSearchService ,{
+    provide: HTTP_INTERCEPTORS,
+    useClass: CustomHttpInterceptorService,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

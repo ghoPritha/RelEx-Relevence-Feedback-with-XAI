@@ -1,6 +1,7 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEvent, HttpHandler, HttpHeaders, HttpInterceptor, HttpParams, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
+import { SpinnerService } from '../spinner/spinner.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -14,7 +15,7 @@ export class NewSearchService {
   serverData: any;
   employeeData: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private spinnerService: SpinnerService) { }
   // sayHi() {
   //   this.http.get('http://127.0.0.1:5002/').subscribe(data => {
   //     this.serverData = data as JSON;
@@ -25,7 +26,7 @@ export class NewSearchService {
   sendQuery(query: string): Observable<any> {
     let queryString = new HttpParams().set('searchString', query);
     // console.log('this.http.get'6
-    return this.http.get('http://192.168.0.12:5021/query', { params: queryString });
+    return this.http.get('http://127.0.0.1:5025/query', { params: queryString });
     // return this.http.get("./assets/keyPhrase.json");
 
   }
@@ -43,7 +44,7 @@ export class NewSearchService {
   sendFeedback(feedbackList: any): Observable<any> {
     let feedbacksList = new HttpParams().set('feedbackList', feedbackList);
     console.log('feedbackList', feedbackList)
-    return this.http.post('http://192.168.0.12:5021/feedback', JSON.stringify(feedbacksList), httpOptions )
+    return this.http.post('http://127.0.0.1:5025/feedback', JSON.stringify(feedbacksList), httpOptions)
     // return this.http.request(
     //   'POST',
     //   'http://127.0.0.1:5000/feedback',

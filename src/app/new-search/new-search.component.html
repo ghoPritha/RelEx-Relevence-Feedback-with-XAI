@@ -15,7 +15,8 @@
                             <div class="container">
                                 <div class="row">
                                     <div class="col-md-12 mx-auto">
-                                        <div class="card  p-3 mb-5 bg-white rounded">
+                                        <div class="card  p-3 mb-5 bg-white rounded"
+                                            style="box-shadow: 10px 10px 10px grey;">
                                             <div class="card-body p-2">
                                                 <div class="input-group input-group-lg">
                                                     <input type="text" class="form-control form-control-lg rounded"
@@ -32,33 +33,54 @@
                                 </div>
                             </div>
                         </div>
-                        <div *ngIf="showResult" class="row ml-5">
-                            <div class="search-form col-8">
-                                <form action="#" method="get">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Search for..." name="search"
-                                            class="form-control form-control-lg rounded" [(ngModel)]="query" (keyup.enter)="search()">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-lg btn-info" type="submit" (keyup.enter)="search()"
-                                                [disabled]="query === ''" (click)="search()">
-                                                Search
-                                            </button>
+                        <!-- <mat-progress-bar color="accent" mode="indeterminate" *ngIf="spinnerService.visibility | async"></mat-progress-bar> -->
+                        <mat-spinner style="margin:0 auto;" 
+                        mode="indeterminate" [diameter]="150" *ngIf="spinnerService.visibility | async">
+                        </mat-spinner>
+                        <div *ngIf="spinnerService.visibility.value == false && showResult" class=" ml-5">
+                            <div class="row">
+                                <div class="search-form col-8">
+                                    <form action="#" method="get">
+                                        <div class="input-group" style="box-shadow: 10px 10px 10px grey;">
+                                            <input type="text" placeholder="Search for..." name="search"
+                                                class="form-control form-control-lg rounded" [(ngModel)]="query"
+                                                (keyup.enter)="search()">
+                                            <div class="input-group-btn">
+                                                <button class="btn btn-lg btn-info" type="submit"
+                                                    (keyup.enter)="search()" [disabled]="query === ''"
+                                                    (click)="search()">
+                                                    Search
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="search-form  col-4 ">
-                                <button class="btn btn-lg btn-success" style="float:right" type="submit" type="submit"
-                                    (keyup.enter)="submit()" [disabled]="releIrreleselected == false"
-                                    (click)="submit()">
-                                    Submit
-                                </button>
+                                    </form>
+                                </div>
+                                <div class="search-form  col-4 ">
+                                    <button class="btn btn-lg btn-success" style="float:right" type="submit" type="submit"
+                                        (keyup.enter)="submit()" [disabled]="releIrreleselected == false"
+                                        (click)="submit()">
+                                        Submit
+                                    </button>
+                                </div>
                             </div>
                             <h3 class="m-3">
                                 <span *ngIf="queryTerm !== ''">{{count}} results found for : &nbsp;</span>
                                 <span class="text-navy" *ngIf="queryTerm !== ''">"{{queryTerm}}"
                                 </span>
                             </h3>
+
+                            <div class="row m-3">
+                                <div class="form-check form-check-inline col-6">
+                                    <input mdbRadio class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio1" value="option1" />
+                                    <label class="form-check-label" for="inlineRadio1">Select all as <b>relevant</b></label>
+                                </div>
+                                <div class="form-check form-check-inline col-6">
+                                    <input mdbRadio class="form-check-input" type="radio" name="inlineRadioOptions"
+                                        id="inlineRadio2" value="option2" />
+                                    <label class="form-check-label" for="inlineRadio2">Select all as <b>irrelevant</b></label>
+                                </div>
+                            </div>
                             <form>
                                 <div
                                     *ngFor="let link of searchResult | paginate: { itemsPerPage: 10, currentPage: p} ;let i=index;">
@@ -86,12 +108,14 @@
                                                         src="../../assets/images/thumb-down.png" /></button>
                                             </span>
                                             <div (click)="openWindow(link); openNewTab = true">
-                                                <span><h3 class="mx-3 mt-2"><a target="#">
-                                                        {{link.title}}</a></h3></span><span class="bi bi-three-dots-vertical"></span>
-                                                <!-- <p class="mx-3" [innerHTML]="link.summary | highlightSearch:query">
-                                        {{link.summary}}</p> -->
-                                                <p class="mx-3">
-                                                    {{link.summary}}</p>
+                                                <span>
+                                                    <h3 class="mx-3 mt-2"><a target="#">
+                                                            {{link.title}}</a></h3>
+                                                </span><span class="bi bi-three-dots-vertical"></span>
+                                                <p class="mx-3" [innerHTML]="link.summary | highlightSearch:link.KeyList">
+                                        {{link.summary}}</p>
+                                                <!-- <p class="mx-3">
+                                                    {{link.summary}}</p> -->
                                                 <!-- <p class="mx-3" appHighlight [content]="link.text" [searchTerm]="query"
                                         [caseSensitive]="true">
                                     </p> -->
