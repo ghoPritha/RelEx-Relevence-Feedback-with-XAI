@@ -25,15 +25,17 @@ export class NewSearchComponent implements OnInit {
   apiBaseUrl: string = "";
   query: string = "";
   openNewTab: boolean = false;
-  title: string | undefined;
-  content: string | undefined;
+  title: string = '';
+  content: string = '';
   releIrrevenatList: any[] = [];
   queryTerm: any;
   // releIrreleselected: boolean = false;
-  allSelected: boolean  = false
+  allSelected: boolean = false
   allSelectedLabel: any;
   disableSubmit: boolean = true;
-  constructor(public dialog: MatDialog, public spinnerService: SpinnerService,private appConfigService: AppConfigService, private newSearchService: NewSearchService) { 
+  keylist: string = '';
+  noOfSelected: number = 0;
+  constructor(public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     console.log(spinnerService.visibility.value)
   }
 
@@ -50,6 +52,7 @@ export class NewSearchComponent implements OnInit {
         console.log("response", response);
         this.p = 1;
         this.searchResult = response;
+        this.releIrrevenatList = this.searchResult
         // this.searchResult = (<SearchResponse>response).resultList;
         // this.count = (<SearchResponse>response).count;
         // this.synonym = (<SearchResponse>response).synonymList;
@@ -59,25 +62,45 @@ export class NewSearchComponent implements OnInit {
       );
     }
   }
-  openDialog(): void {
+  openDialog(eventName: string): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      data: {name: this.allSelectedLabel},
+      data: {
+        name: this.allSelectedLabel,
+        event: eventName
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      // this.animal = result;
+      if (result.event == 'Cancel') {
+        this.allSelectedLabel = null;
+      } else if (result.event == 'Proceed') {
+        this.allSelectedLabel = null;
+        this.openDialog('closed');
+      }
     });
   }
   openWindow(link: ResultList): void {
     this.openNewTab = true;
-    this.title = link.docno;
+    this.title = link.title;
+
+    this.keylist = link.KeyList;
     this.content = link.abstract;
   }
 
   onChange(docId: any, isChecked: any): void {
     console.log(docId, isChecked.target.checked)
-
+    if (this.allSelectedLabel == 'relevant') {
+      this.releIrrevenatList.forEach((each) => {
+        each.relevant = true
+      }
+      )
+    }
+    else if (this.allSelectedLabel == 'irrelevant') {
+      this.releIrrevenatList.forEach((each) => {
+        each.relevant = false
+      })
+    }
+    this.noOfSelected = 0
   }
 
   // handleChange($event: Event) {
@@ -89,8 +112,8 @@ export class NewSearchComponent implements OnInit {
 
   submit() {
     console.log("response", this.releIrrevenatList);
-    if(this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant'){
-      this.openDialog();
+    if (this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant') {
+      this.openDialog('submit');
     }
     this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
       console.log("response", response);
@@ -101,23 +124,48 @@ export class NewSearchComponent implements OnInit {
   }
 
   public markReleIrrele(event: any, item: any, relevance: boolean) {
-    console.log(item, relevance)
+    // console.log(item, relevance)
     // this.releIrreleselected = true;
     let selectedDoc = {
       docno: item.docno,
       item: item,
       relevant: relevance
     };
+    this.releIrrevenatList.forEach((each) => {
+      if (each.docno == item.docno) {
+        if (each.relevant == null) {
+          console.log("empty", each.relevant, each.relevant == null, each.relevant == '')
+          each.relevant = relevance
+        }
+        else {
+          console.log("already has", each.relevant, each.relevant == null, each.relevant == '')
+          each.relevant = !each.relevant
+        }
+        if (each.relevant) {
+          this.noOfSelected++;
+        }
+        else {
+          this.noOfSelected--;
+        }
+      }
+      else {
+        if (each.relevant == null) {
+          each.relevant = false
+        }
+      }
+    }
+    )
+    console.log(this.releIrrevenatList)
     // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
-    if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
-      let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
-      this.releIrrevenatList[itemIndex] = selectedDoc;
-    }
-    else {
-      this.releIrrevenatList.forEach
-      this.releIrrevenatList.push(selectedDoc)
-    }
-    if(this.releIrrevenatList.length > 3){
+    // if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
+    //   let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
+    //   this.releIrrevenatList[itemIndex] = selectedDoc;
+    // }
+    // else {
+    //   this.releIrrevenatList.forEach
+    //   this.releIrrevenatList.push(selectedDoc)
+    // }
+    if (this.releIrrevenatList.length > 3) {
       this.disableSubmit = false;
     }
     // console.log('releIrrevenatList', this.releIrrevenatList)
@@ -144,9 +192,12 @@ export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) {}
+  ) { }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close({ event: 'Cancel' });
+  }
+  onYesClick(): void {
+    this.dialogRef.close({ event: 'Proceed' });
   }
 }

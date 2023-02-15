@@ -38,7 +38,7 @@
                             *ngIf="spinnerService.visibility | async">
                         </mat-spinner>
                         <div *ngIf="spinnerService.visibility.value == false && showResult" class=" ml-5">
-                            <div class="row">
+                            <div class="row mx-4">
                                 <div class="search-form col-8">
                                     <form action="#" method="get">
                                         <div class="input-group" style="box-shadow: 10px 10px 10px grey;">
@@ -56,21 +56,27 @@
                                     </form>
                                 </div>
                                 <div class="search-form  col-4 ">
-                                    <button class="btn btn-lg btn-success" style="float:right" type="submit"
-                                        type="submit" (keyup.enter)="submit()" [disabled]="disableSubmit"
-                                        (click)="submit()">
+                                    <button class="btn btn-lg" style="float:right" type="submit" type="submit"
+                                        (keyup.enter)="submit()" [disabled]="disableSubmit" (click)="submit()"
+                                        [ngClass]="noOfSelected >= 3 ? 'btn-success' : 'btn-secondary'">
                                         Submit
                                     </button>
                                 </div>
                             </div>
-                            <h3 class="m-3">
-                                <span *ngIf="queryTerm !== ''">{{count}} results found for : &nbsp;</span>
-                                <span class="text-navy" *ngIf="queryTerm !== ''">"{{queryTerm}}"
-                                </span>
-                            </h3>
-
-                            <div class="row m-3">
-                                <mat-radio-group aria-label="You can also choose " (change)="disableSubmit = false"[(ngModel)]="allSelectedLabel">
+                            <div class="row col-12 m-4">
+                                <h3 class="col-8">
+                                    <span *ngIf="queryTerm !== ''">{{count}} results found for : &nbsp;</span>
+                                    <span class="text-navy" *ngIf="queryTerm !== ''">"{{queryTerm}}"
+                                    </span>
+                                </h3>
+                                <h3 class="col-3"
+                                    [ngClass]="noOfSelected >= 3 ? 'noOfSelectedDone' : 'noOfSelected'">
+                                    <span style="float:right">{{noOfSelected}}/3</span>
+                                </h3>
+                            </div>
+                            <div class="row m-4">
+                                <mat-radio-group aria-label="You can also choose " (change)="disableSubmit = false"
+                                    [(ngModel)]="allSelectedLabel" class="mx-4">
                                     <mat-radio-button class="mr-5" value="relevant">Select all as
                                         <b>relevant</b></mat-radio-button>
                                     <mat-radio-button value="irrelevant">Select all as
@@ -101,24 +107,19 @@
                                         <img src="../../assets/thumb-down.png" width="18" height="18">
                                     </button> -->
                                     <!-- <input type="checkbox" (change)="onChange(link.doc_id, $event)"> -->
-                                    <div class="search-result col-7 card mb-6 m-3 p-3 rounded"
+                                    <div class="search-result col-10 card mb-6 m-3 p-3 rounded"
                                         style="cursor:pointer; background:none!important; border:none!important">
                                         <div class="row">
-                                            <span class="col-6">
-                                                <button style="background:rgb(212, 209, 209);border: none;float:left"
-                                                    (click)="markReleIrrele($event,link, true)"><img
-                                                        class="likedislikeimage mb-2 rounded"
-                                                        src="../../assets/images/like.png" /></button>
-                                            </span>
-                                            <span class="col-6">
+                                            <!-- <span class="col-6">
                                                 <button style="background:rgb(212, 209, 209);border: none;float:right"
                                                     (click)="markReleIrrele($event,link, false)"><img
                                                         class="likedislikeimage mb-2 rounded"
                                                         src="../../assets/images/thumb-down.png" /></button>
-                                            </span>
-                                            <div (click)="openWindow(link); openNewTab = true">
+                                            </span> -->
+                                            <div class="col-7">
                                                 <span>
-                                                    <h3 class="mx-3 mt-2"><a target="#">
+                                                    <h3 class="mx-3 mt-2"><a
+                                                            (click)="openWindow(link); openNewTab = true" target="#">
                                                             {{link.title}}</a></h3>
                                                 </span><span class="bi bi-three-dots-vertical"></span>
                                                 <p class="mx-3"
@@ -129,10 +130,18 @@
                                                 <!-- <p class="mx-3" appHighlight [content]="link.text" [searchTerm]="query"
                                         [caseSensitive]="true">
                                     </p> -->
-                                                <b class="mx-3 mt-2"><span>&nbsp;KeyPhrases: </span>
+                                                <!-- <b class="mx-3 mt-2"><span>&nbsp;KeyPhrases: </span>
                                                     <span class="bold">{{link.KeyList}}</span>&nbsp;
-                                                </b>
+                                                </b> -->
                                             </div>
+
+                                            <span class="col-3">
+                                                <button style="border: none;margin:0px auto"
+                                                    (click)="markReleIrrele($event,link, true)"><img
+                                                        class="likedislikeimage mb-2 rounded"
+                                                        src="../../assets/images/like.png" /> <b>Is
+                                                        relevant</b></button>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +180,9 @@
                                 <h2 style="
                                 margin-left: auto;
                                 margin-right: auto;">{{title}}</h2>
-                                <p>{{content}}</p>
+                                <!-- <p>{{content}}</p> -->
+                                <p class="mx-3" [innerHTML]="content | highlightSearch:keylist">
+                                    {{content}}</p>
                             </div>
                         </div>
                     </div>

@@ -24,13 +24,17 @@ export class HighlightSearchPipe implements PipeTransform {
   //   return replacedWords;
   // }
   transform(value: string, args: string[] | string): string {
-    if (!args.length) { return value; }
+    console.log(args)
+
+    if (args != null && args != undefined &&!args.length) { return value; }
     const pattern = Array.isArray(args) ? args.filter(arg => !!arg).map(this.escapeRegex).join('|') : this.escapeRegex(args);
     const regex = new RegExp(pattern.concat('|<[^>]*>'), 'gi');
-    return value.replace(regex, (match) => /<[^>]*>/g.test(match) ? match: `<span class='highlight'>${match}</span>`);
+    return value != '' && value != undefined ? value.replace(regex, (match) => /<[^>]*>/g.test(match) ? match: `<span class='highlight'>${match}</span>`) : '';
 }
 
 escapeRegex(word: string) {
-  return word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+  console.log(word)
+
+  return word != ''&& word != undefined ? word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
 }
 }
