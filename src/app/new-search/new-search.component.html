@@ -81,10 +81,9 @@
                                 <b>irrelevant</b></mat-radio-button>
                         </mat-radio-group>
 
-                        <h3 class="col-3" [ngClass]="noOfSelected >= 3 ? 'noOfSelectedDone' : 'noOfSelected'"
-                            >
-                            <span style="float:right">{{noOfSelected}}/3 </span><span style="font-size:16px">Relevant
-                                document selected -</span>
+                        <h3 class="col-3"   style="float:right"[ngClass]="noOfSelected >= 3 ? 'noOfSelectedDone' : 'noOfSelected'">
+                        <span style="font-size:16px">Relevant
+                            document selected -</span><span>{{noOfSelected}}/3</span>
                         </h3>
                         <!-- <div class="form-check form-check-inline col-6">
                                 <input mdbRadio class="form-check-input" type="radio" name="inlineRadioOptions"
