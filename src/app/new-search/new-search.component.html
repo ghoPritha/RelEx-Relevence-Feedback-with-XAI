@@ -84,7 +84,7 @@
                         <h3 class="col-3" [ngClass]="noOfSelected >= 3 ? 'noOfSelectedDone' : 'noOfSelected'"
                             >
                             <span style="float:right">{{noOfSelected}}/3 </span><span style="font-size:16px">Relevant
-                                document selected - </span>
+                                document selected -</span>
                         </h3>
                         <!-- <div class="form-check form-check-inline col-6">
                                 <input mdbRadio class="form-check-input" type="radio" name="inlineRadioOptions"
@@ -138,7 +138,7 @@
                                     </div>
 
                                     <span class="col-3 align-self-center">
-                                        <button style="border: none;margin:5px auto" [ngClass]="{'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle, 'btn btn-secondary': !link.bntStyle}"
+                                        <button style="border: none;margin:5px auto" [ngClass]="{'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle, 'btn btn-secondary': link.bntStyle == null }"
                                             (click)="markReleIrrele($event,link, true)"><img
                                                 class="likedislikeimage mb-2 rounded"
                                                 src="../../assets/images/like.png" /> <b>
