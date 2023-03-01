@@ -4,4 +4,5 @@ export interface ResultList {
     abstract: string;
     summary: string;
     KeyList: string;
+    bntStyle: boolean
 }

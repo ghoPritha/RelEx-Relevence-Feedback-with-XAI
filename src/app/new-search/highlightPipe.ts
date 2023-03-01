@@ -24,7 +24,7 @@ export class HighlightSearchPipe implements PipeTransform {
   //   return replacedWords;
   // }
   transform(value: string, args: string[] | string): string {
-    console.log(args)
+    // console.log(args)
 
     if (args != null && args != undefined &&!args.length) { return value; }
     const pattern = Array.isArray(args) ? args.filter(arg => !!arg).map(this.escapeRegex).join('|') : this.escapeRegex(args);
@@ -33,7 +33,7 @@ export class HighlightSearchPipe implements PipeTransform {
 }
 
 escapeRegex(word: string) {
-  console.log(word)
+  // console.log(word)
 
   return word != ''&& word != undefined ? word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
 }

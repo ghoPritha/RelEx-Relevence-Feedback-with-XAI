@@ -31,12 +31,13 @@ export class NewSearchComponent implements OnInit {
   queryTerm: any;
   // releIrreleselected: boolean = false;
   allSelected: boolean = false
-  allSelectedLabel: any;
+  allSelectedLabel: any = '';
   disableSubmit: boolean = true;
   keylist: string = '';
   noOfSelected: number = 0;
+  bntStyle: any ;
   constructor(public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
-    console.log(spinnerService.visibility.value)
+    // console.log(spinnerService.visibility.value)
   }
 
   ngOnInit(): void {
@@ -49,7 +50,7 @@ export class NewSearchComponent implements OnInit {
       this.showResult = true;
       this.searchResult = [];
       this.newSearchService.sendQuery(this.query).subscribe(response => {
-        console.log("response", response);
+        // console.log("response", response);
         this.p = 1;
         this.searchResult = response;
         this.releIrrevenatList = this.searchResult
@@ -75,7 +76,7 @@ export class NewSearchComponent implements OnInit {
         this.allSelectedLabel = null;
       } else if (result.event == 'Proceed') {
         this.allSelectedLabel = null;
-        this.openDialog('closed');
+        // this.openDialog('closed');
       }
     });
   }
@@ -88,7 +89,7 @@ export class NewSearchComponent implements OnInit {
   }
 
   onChange(docId: any, isChecked: any): void {
-    console.log(docId, isChecked.target.checked)
+    // console.log(docId, isChecked.target.checked)
     if (this.allSelectedLabel == 'relevant') {
       this.releIrrevenatList.forEach((each) => {
         each.relevant = true
@@ -111,7 +112,7 @@ export class NewSearchComponent implements OnInit {
   // }
 
   submit() {
-    console.log("response", this.releIrrevenatList);
+    // console.log("response", this.releIrrevenatList);
     if (this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant') {
       this.openDialog('submit');
     }
@@ -143,9 +144,11 @@ export class NewSearchComponent implements OnInit {
         }
         if (each.relevant) {
           this.noOfSelected++;
+          each.bntStyle = true;
         }
         else {
           this.noOfSelected--;
+          each.bntStyle = false;
         }
       }
       else {
@@ -165,7 +168,7 @@ export class NewSearchComponent implements OnInit {
     //   this.releIrrevenatList.forEach
     //   this.releIrrevenatList.push(selectedDoc)
     // }
-    if (this.releIrrevenatList.length > 3) {
+    if (this.noOfSelected > 3) {
       this.disableSubmit = false;
     }
     // console.log('releIrrevenatList', this.releIrrevenatList)
@@ -189,10 +192,13 @@ export class NewSearchComponent implements OnInit {
   templateUrl: 'dialog.html',
 })
 export class DialogOverviewExampleDialog {
+  eventName: any;
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-  ) { }
+  ) {
+    this.eventName = data.event
+  }
 
   onNoClick(): void {
     this.dialogRef.close({ event: 'Cancel' });

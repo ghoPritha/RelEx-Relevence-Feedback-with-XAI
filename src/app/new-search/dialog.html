@@ -1,20 +1,20 @@
 <!-- <h1 mat-dialog-title>Hi {{data.name}}</h1> -->
-<div *ngIf="event == 'submit'">
+<!-- <div *ngIf="eventName == 'submit'"> -->
 
-  <div mat-dialog-content>
-    <p>Hey</p>
-    <label>You have selected all the documents as <b>{{data.name}}</b></label>
-    <br>
-    <label>Do you want to submit your response?</label>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No, I want to change my response</button>
-    <button mat-button (click)="onYesClick()">Yes</button>
-  </div>
+<div mat-dialog-content>
+  <p>Hey</p>
+  <label>You have selected all the documents as <b>{{data.name}}</b></label>
+  <br>
+  <label>Do you want to submit your response?</label>
 </div>
-<div *ngIf="event == 'closed'">
-  <div mat-dialog-content>
-    <p>Hey</p>
-    <label>Thank you for your feedback</label>
-  </div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No, I want to change my response</button>
+  <button mat-button (click)="onYesClick()">Yes</button>
 </div>
+<!-- </div> -->
+<!-- <div *ngIf="eventName == 'closed'"> -->
+<!-- <div mat-dialog-content>
+  <p>Hey</p>
+  <label>Thank you for your feedback</label>
+</div> -->
+<!-- </div> -->
