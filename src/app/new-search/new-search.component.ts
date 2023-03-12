@@ -36,6 +36,7 @@ export class NewSearchComponent implements OnInit {
   keylist: string = '';
   noOfSelected: number = 0;
   bntStyle: any ;
+  reveiwedResult: boolean = false;
   constructor(public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
   }
@@ -119,6 +120,10 @@ export class NewSearchComponent implements OnInit {
     this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
       console.log("response", response);
       this.p = 1;
+      this.reveiwedResult = true;
+      
+      this.searchResult = response;
+      this.releIrrevenatList = this.searchResult
     },
       err => console.error(err),
     );
@@ -168,10 +173,14 @@ export class NewSearchComponent implements OnInit {
     //   this.releIrrevenatList.forEach
     //   this.releIrrevenatList.push(selectedDoc)
     // }
-    if (this.noOfSelected > 3) {
+    if (this.noOfSelected >= 3) {
       this.disableSubmit = false;
     }
     // console.log('releIrrevenatList', this.releIrrevenatList)
+  }
+
+  showExplanattion(event: any, item: any){
+
   }
 
   // public markIrrele(event:any, item:any){
