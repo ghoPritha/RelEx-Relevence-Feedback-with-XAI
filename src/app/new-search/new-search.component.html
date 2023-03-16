@@ -43,7 +43,7 @@
                                         <input type="text" placeholder="Search for..." name="search"
                                             class="form-control form-control-lg rounded" [(ngModel)]="query"
                                             (keyup.enter)="search()">
-                                        <button (click)="search()" type="submit" [disabled]="disableSubmit"
+                                        <button (click)="search()" type="submit"
                                             class="btn btn-outline-info btn-lg"><i class="fa fa-search"
                                                 style="font-size:20px"></i></button>
                                         <!-- <div class="input-group-btn">
@@ -137,10 +137,10 @@
                                             (click)="markReleIrrele($event,link, true)"><img
                                                 class="likedislikeimage mb-2 rounded"
                                                 src="../../assets/images/like.png" /> <b>
-                                                Relevant</b></button>
-                                        <div *ngIf="reveiwedResult == true && link.relevant == true" id="boot-icon"
-                                            class="bi bi-check-circle-fill"
-                                            style="font-size: 10rem; color: rgb(0, 128, 55);"></div>
+                                                Relevant</b></button> 
+                                        <div *ngIf="reveiwedResult == false && link.relevant == true">
+                                            <img src="../../assets/images/check.png" width="40" height="40">
+                                        </div>
                                     </span>
 
                                 </div>
@@ -149,19 +149,19 @@
 
                         </div>
                         <!-- <div class="hr-line-dashed"></div> -->
-                        <div class="text-center">
+                        <!-- <div class="text-center">
                             <div class="btn-group pt-3" style="font-weight:500;color:white">
-                                <!-- <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
+                                <mat-paginator #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
                                         [showFirstLastButtons]="true" [length]="totalSize"
                                         (page)="pageEvent = handlePage($event)" [pageIndex]="currentPage">
-                                    </mat-paginator> -->
+                                    </mat-paginator>
                                 <pagination-controls (pageChange)="p = $event"></pagination-controls>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="row">
                             <div class="col-3 m-4" style="float:right">
-                                <button class="btn btn-lg" type="submit" type="submit" (keyup.enter)="submit()"
-                                    [disabled]="disableSubmit" (click)="submit()"
+                                <button class="btn btn-lg" (keyup.enter)="onSubmit()" type="button" 
+                                    [disabled]="disableSubmit" (click)="onSubmit()"
                                     [ngClass]="noOfSelected >= 3 ||allSelectedLabel != '' ? 'btn-success' : 'btn-secondary'">
                                     Submit Feedback
                                 </button>

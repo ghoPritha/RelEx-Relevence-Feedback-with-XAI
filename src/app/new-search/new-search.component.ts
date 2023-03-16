@@ -112,7 +112,7 @@ export class NewSearchComponent implements OnInit {
   // // throw new Error('Method not implemented.');
   // }
 
-  submit() {
+  onSubmit() {
     // console.log("response", this.releIrrevenatList);
     if (this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant') {
       this.openDialog('submit');
@@ -175,6 +175,9 @@ export class NewSearchComponent implements OnInit {
     // }
     if (this.noOfSelected >= 3) {
       this.disableSubmit = false;
+    }
+    else{
+      this.disableSubmit = true
     }
     // console.log('releIrrevenatList', this.releIrrevenatList)
   }
