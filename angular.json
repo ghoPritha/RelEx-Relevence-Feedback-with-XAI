@@ -9,7 +9,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "IRProgramming05": {
+    "Relevance Feedback with XAI": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/irprogramming05",
+            "outputPath": "dist/Relevance Feedback with XAI",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -79,10 +79,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "IRProgramming05:build:production"
+              "browserTarget": "Relevance Feedback with XAI:build:production"
             },
             "development": {
-              "browserTarget": "IRProgramming05:build:development"
+              "browserTarget": "Relevance Feedback with XAI:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -90,7 +90,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "IRProgramming05:build"
+            "browserTarget": "Relevance Feedback with XAI:build"
           }
         },
         "test": {
@@ -114,5 +114,5 @@
       }
     }
   },
-  "defaultProject": "IRProgramming05"
+  "defaultProject": "Relevance Feedback with XAI"
 }

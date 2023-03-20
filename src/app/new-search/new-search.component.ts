@@ -4,7 +4,8 @@ import { AppConfigService } from '../app-config.service';
 import { SpinnerService } from '../spinner/spinner.service';
 import { NewSearchService } from './new-search.service';
 import { ResultList } from './searchResponse';
-
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
@@ -12,7 +13,7 @@ import { ResultList } from './searchResponse';
 })
 export class NewSearchComponent implements OnInit {
   p: number = 1;
-  imageSrc = "/assets/images/logo.png";
+  imageSrc :string | undefined;
   imageAlt = "aa";
   public dataSource: any;
   public pageSize = 10;
@@ -35,9 +36,9 @@ export class NewSearchComponent implements OnInit {
   disableSubmit: boolean = true;
   keylist: string = '';
   noOfSelected: number = 0;
-  bntStyle: any ;
+  bntStyle: any;
   reveiwedResult: boolean = false;
-  constructor(public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
+  constructor(private domSanitizer: DomSanitizer, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
   }
 
@@ -81,6 +82,14 @@ export class NewSearchComponent implements OnInit {
       }
     });
   }
+
+  openPlotDialog(): void {
+    const dialogRef = this.dialog.open(ShowPlotDialog, {
+      data: {
+        imagesource: this.imageSrc
+      },
+    });
+  }
   openWindow(link: ResultList): void {
     this.openNewTab = true;
     this.title = link.title;
@@ -121,7 +130,7 @@ export class NewSearchComponent implements OnInit {
       console.log("response", response);
       this.p = 1;
       this.reveiwedResult = true;
-      
+
       this.searchResult = response;
       this.releIrrevenatList = this.searchResult
     },
@@ -176,13 +185,13 @@ export class NewSearchComponent implements OnInit {
     if (this.noOfSelected >= 3) {
       this.disableSubmit = false;
     }
-    else{
+    else {
       this.disableSubmit = true
     }
     // console.log('releIrrevenatList', this.releIrrevenatList)
   }
 
-  showExplanattion(event: any, item: any){
+  showExplanattion(event: any, item: any) {
 
   }
 
@@ -195,8 +204,23 @@ export class NewSearchComponent implements OnInit {
   //   console.log(event, item)
 
   // }
+  generatePlot() {
+    this.newSearchService.generatePlot().subscribe(response => {
+      console.log("search result", response);
 
-
+      const img = new Uint8Array(response);
+      
+      const blob = new Blob([img], { type: 'image/png' });
+      console.log("search result", blob);
+      const reader = new FileReader();
+        reader.onloadend = () => {
+          this.imageSrc = reader.result as string;
+          console.log(this.imageSrc)
+        };
+        reader.readAsDataURL(blob);
+        this.openPlotDialog();
+    });
+  }
 }
 
 @Component({
@@ -217,5 +241,18 @@ export class DialogOverviewExampleDialog {
   }
   onYesClick(): void {
     this.dialogRef.close({ event: 'Proceed' });
+  }
+}
+
+@Component({
+  selector: 'show-plot-dialog',
+  templateUrl: 'showPlot.html',
+})
+export class ShowPlotDialog {
+  imagesource: any;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.imagesource = data.imagesource
   }
 }
