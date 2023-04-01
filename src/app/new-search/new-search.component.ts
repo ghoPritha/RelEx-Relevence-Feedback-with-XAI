@@ -6,6 +6,8 @@ import { NewSearchService } from './new-search.service';
 import { ResultList } from './searchResponse';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
+import {MatChipsModule} from '@angular/material/chips';
+
 @Component({
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
@@ -34,7 +36,7 @@ export class NewSearchComponent implements OnInit {
   allSelected: boolean = false
   allSelectedLabel: any = '';
   disableSubmit: boolean = true;
-  keylist: string = '';
+  keylist: string[] = [];
   noOfSelected: number = 0;
   bntStyle: any;
   reveiwedResult: boolean = false;
@@ -52,7 +54,7 @@ export class NewSearchComponent implements OnInit {
       this.showResult = true;
       this.searchResult = [];
       this.newSearchService.sendQuery(this.query).subscribe(response => {
-        // console.log("response", response);
+        console.log("response", response);
         this.p = 1;
         this.searchResult = response;
         this.releIrrevenatList = this.searchResult
@@ -91,7 +93,7 @@ export class NewSearchComponent implements OnInit {
     });
   }
   openWindow(link: ResultList): void {
-    this.openNewTab = true;
+    // this.openNewTab = true;
     this.title = link.title;
 
     this.keylist = link.KeyList;
@@ -138,6 +140,24 @@ export class NewSearchComponent implements OnInit {
     );
   }
 
+  highlightedText(text: string, keywords: string[], query: string) {
+    if (!text || !keywords || !query) {
+      return '';
+    }
+
+    const regex = new RegExp(`(${keywords.join('|')})|(${query})`, 'gi');
+    const highlighted = text.replace(regex, (match, p1, p2) => {
+      if (p1) {
+        return `<span style='background-color:yellow'>${match}</span>`;
+      } else if (p2) {
+        return `<span style='background-color:purple'>${match}</span>`;
+      } else {
+        return match;
+      }
+    });
+
+    return highlighted;
+  }
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     // console.log(item, relevance)
     // this.releIrreleselected = true;
@@ -216,9 +236,10 @@ export class NewSearchComponent implements OnInit {
         reader.onloadend = () => {
           this.imageSrc = reader.result as string;
           console.log(this.imageSrc)
+          this.openPlotDialog();
+
         };
         reader.readAsDataURL(blob);
-        this.openPlotDialog();
     });
   }
 }
@@ -254,5 +275,6 @@ export class ShowPlotDialog {
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.imagesource = data.imagesource
+    console.log(this.imagesource)
   }
 }

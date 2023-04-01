@@ -11,17 +11,19 @@ import { NewSearchService } from './new-search/new-search.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HighlightSearchPipe } from './new-search/highlightPipe';
 import { HighlightDirective } from './highlight.directive';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { RouterModule, Routes } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner' 
 import { MatProgressBarModule } from '@angular/material/progress-bar' 
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
-
+import {MatChipsModule} from '@angular/material/chips';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CustomHttpInterceptorService } from './custom-http-interceptor.service';
 import { MatButtonModule } from '@angular/material/button';
-
+import { HighlightQueryPipe } from './new-search/highlightQuery';
+import {MatIconModule} from '@angular/material/icon';
+import {MatBadgeModule} from '@angular/material/badge';
+import { HighlightComponent } from './highlight/highlight.component';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -34,6 +36,8 @@ const appRoutes: Routes = [
     NewSearchComponent,
     HighlightDirective,
     SpinnerComponent,
+    HighlightQueryPipe,
+    HighlightComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -43,14 +47,16 @@ const appRoutes: Routes = [
     AppRoutingModule,
     FormsModule,
     FontAwesomeModule,
-    NgxPaginationModule,
     NgbModule,
     HttpClientModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatDialogModule,
     MatRadioModule,
-    MatButtonModule
+    MatButtonModule, 
+    MatChipsModule,
+    MatIconModule, 
+    MatBadgeModule
   ],
   exports: [RouterModule],
   providers: [
@@ -58,7 +64,7 @@ const appRoutes: Routes = [
     provide: HTTP_INTERCEPTORS,
     useClass: CustomHttpInterceptorService,
     multi: true
-  }],
+  }, HighlightQueryPipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

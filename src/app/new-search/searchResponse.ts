@@ -3,7 +3,7 @@ export interface ResultList {
     title: string;
     abstract: string;
     summary: string;
-    KeyList: string;
+    KeyList: string[];
     bntStyle: boolean;
     relevant: boolean
 }

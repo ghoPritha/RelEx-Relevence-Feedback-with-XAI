@@ -258,6 +258,20 @@ body {
     font-weight: bold;
 }
 
+::ng-deep mark.highlighted-keyword {
+  background-color: yellow !important;
+  color: black !important;
+}
+
+::ng-deep mark.highlighted-query {
+  background-color: cyan !important;
+  color: black !important;
+}
+
+
+.highlight2 {
+  color: rgb(238, 172, 50)!important
+}
 /* Customize the label (the container) */
 .container {
     display: block;

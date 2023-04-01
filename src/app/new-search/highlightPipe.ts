@@ -4,37 +4,53 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'highlightSearch',
 })
 export class HighlightSearchPipe implements PipeTransform {
-  // transform(value: any[], args: any): any {
-  //   var match: any[] = []
-  //   var replacedWords : any[] = [] 
-  //   if (!args) {
-  //     return "";
-  //   }
+  //   transform(value: string, args: string[] | string, query : string): string {
+  //     console.log(args, args.length)
+  //     let temp, newTemp;
+  //     if (args != null && args != undefined &&!args.length) { return value; }
+  //     const pattern = Array.isArray(args) ? args.filter(arg => !!arg).map(this.escapeRegex).join('|') : this.escapeRegex(args);
+  //     const regex = new RegExp(pattern.concat('|<[^>]*>'), 'gi');
+  //     temp = value != '' && value != undefined ? value.replace(regex, (match) => /<[^>]*>/g.test(match) ? match: `<span style='background-color:yellow'>${match}</span>`) : ''
 
-  //   const regex = new RegExp(args, 'gi');
-  //   value.forEach(eachValue => {
-  //     const match = eachValue.match(regex);
-  //     replacedWords.push(eachValue.replace(regex, `<span class='highlight'>${match[0]}</span>`))
-  //   })
+  //     // if (!query) {
+  //     //   return temp;
+  //     // }
 
-  //   if (!match || match.length < 0) {
-  //     return "";
-  //   }
-    
-  //   return replacedWords;
+  //     // const newregex = new RegExp(query, 'gi');
+  //     // const newmatch = temp.match(newregex);
+
+  //     // if (!newmatch) {
+  //     //   return temp;
+  //     // }
+
+  //     // newTemp = temp.replace(regex, `<span style='background-color:purple'>${newmatch[0]}</span>`)
+  //     // return temp;
+  //     return value != '' && value != undefined ? value.replace(regex, (match) => /<[^>]*>/g.test(match) ? match: `<span class='highlight'>${match}</span>`) : ''
   // }
-  transform(value: string, args: string[] | string): string {
-    // console.log(args)
+  transform(text: string, keywords: string[], query: string, keywordClass: string, queryClass: string): string {
+    if (!text || !keywords || !query) {
+      return text;
+    }
 
-    if (args != null && args != undefined &&!args.length) { return value; }
-    const pattern = Array.isArray(args) ? args.filter(arg => !!arg).map(this.escapeRegex).join('|') : this.escapeRegex(args);
-    const regex = new RegExp(pattern.concat('|<[^>]*>'), 'gi');
-    return value != '' && value != undefined ? value.replace(regex, (match) => /<[^>]*>/g.test(match) ? match: `<span class='highlight'>${match}</span>`) : '';
-}
+    let highlighted = text;
+    keywords.forEach((keyword) => {
+      if (keyword) {
+        const regex = new RegExp(`(${keyword})`, 'gi');
+        highlighted = highlighted.replace(regex, `<mark class="${keywordClass}">$&</mark>`);
+      }
+    });
 
-escapeRegex(word: string) {
-  // console.log(word)
+    if (query) {
+      const regex = new RegExp(`(${query})`, 'gi');
+      highlighted = highlighted.replace(regex, `<mark class="${queryClass}">$&</mark>`);
+    }
 
-  return word != ''&& word != undefined ? word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
-}
+    return highlighted;
+  }
+
+  escapeRegex(word: string) {
+    // console.log(word)
+
+    return word != '' && word != undefined ? word.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') : '';
+  }
 }

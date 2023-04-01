@@ -26,7 +26,7 @@ export class NewSearchService {
   sendQuery(query: string): Observable<any> {
     let queryString = new HttpParams().set('searchString', query);
     // console.log('this.http.get'6
-    return this.http.get('http://127.0.0.1:5093/query', { params: queryString });
+    return this.http.get('http://127.0.0.1:5118/query', { params: queryString });
     // return this.http.get("./assets/images/like.png");
     // return this.http.get("./assets/keyPhrase.json");
 
@@ -34,7 +34,7 @@ export class NewSearchService {
 
   generatePlot(): Observable<any> {
     // console.log('this.http.get'6
-    return this.http.get('http://127.0.0.1:5093/plot', { responseType: 'arraybuffer'});
+    return this.http.get('http://127.0.0.1:5118/plot', { responseType: 'arraybuffer'});
     // return this.http.get("./assets/images/like.png");
     // return this.http.get("./assets/keyPhrase.json");
 
@@ -53,7 +53,7 @@ export class NewSearchService {
   sendFeedback(feedbackList: any): Observable<any> {
     let feedbacksList = new HttpParams().set('feedbackList', feedbackList);
     console.log('feedbackList', feedbackList)
-    return this.http.post('http://127.0.0.1:5093/feedback', JSON.stringify(feedbacksList), httpOptions)
+    return this.http.post('http://127.0.0.1:5118/feedback', JSON.stringify(feedbacksList), httpOptions)
     // return this.http.request(
     //   'POST',
     //   'http://127.0.0.1:5000/feedback',
