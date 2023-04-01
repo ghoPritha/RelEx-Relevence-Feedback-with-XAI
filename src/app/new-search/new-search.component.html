@@ -125,19 +125,18 @@
                                         [caseSensitive]="true">
                                     </p> -->
                                             <!-- <b class="mx-3 mt-2"><span>&nbsp;KeyPhrases: </span>
-                                                    <span class="bold">{{link.KeyList}}</span>&nbsp;
+                                                    <span class="bold">{{link.KeyList}}</span>&nbsp; [ngClass]="{ 'btn btn-secondary': link.bntStyle == null , 'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle}"
                                                 </b> -->
                                         </div>
 
                                         <span class="col-3 align-self-center">
-                                            <button style="border: none;margin:5px auto" *ngIf="reveiwedResult == false"
-                                                [ngClass]="{ 'btn btn-secondary': link.bntStyle == null , 'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle}"
+                                            <mat-chip style="border: none;margin:5px auto" *ngIf="reveiwedResult == false"
                                                 (click)="markReleIrrele($event,link, true)">
-                                                <img class="mb-2 rounded"
+                                                <!-- <img class="mb-2 rounded"
                                                     width="15" height="15" src="../../assets/images/like.png" /> <b
-                                                    style="font-size:10px;">
-                                                    Relevant</b>
-                                                </button>
+                                                    style="font-size:10px;"> -->
+                                                    <!-- Relevant</b> -->Relevant
+                                                </mat-chip>
                                             <span *ngIf="reveiwedResult == true && link.relevant == true">
                                                 <img src="../../assets/images/check.png" width="40" height="40">
                                             </span>

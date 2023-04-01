@@ -259,12 +259,13 @@ body {
 }
 
 ::ng-deep mark.highlighted-keyword {
-  background-color: yellow !important;
-  color: black !important;
+  font-weight: bold;
+  background-color: white !important;
+
 }
 
 ::ng-deep mark.highlighted-query {
-  background-color: cyan !important;
+  background-color: rgb(188, 188, 74) !important;
   color: black !important;
 }
 
