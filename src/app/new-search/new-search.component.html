@@ -113,8 +113,7 @@
                                             </span> -->
                                         <div class="col-9">
                                             <span>
-                                                <h3 class="mx-3 mt-2"><a (click)="openWindow(link); openNewTab = true"
-                                                        target="#" href="" style="color:rgba(0, 0, 255, 0.32)">
+                                                <h3 class="mx-3 mt-2"><a (click)="openWindow(link);" style="color:rgba(0, 0, 255, 0.32)">
                                                         {{link.title}}</a></h3>
                                             </span>
                                             <p class="mx-3" [innerHTML]="link.summary | highlightSearch:link.KeyList : query :'highlighted-keyword':'highlighted-query'">
@@ -125,18 +124,19 @@
                                         [caseSensitive]="true">
                                     </p> -->
                                             <!-- <b class="mx-3 mt-2"><span>&nbsp;KeyPhrases: </span>
-                                                    <span class="bold">{{link.KeyList}}</span>&nbsp; [ngClass]="{ 'btn btn-secondary': link.bntStyle == null , 'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle}"
+                                                    <span class="bold">{{link.KeyList}}</span>&nbsp;
                                                 </b> -->
                                         </div>
 
                                         <span class="col-3 align-self-center">
-                                            <mat-chip style="border: none;margin:5px auto" *ngIf="reveiwedResult == false"
+                                            <button style="border: none;margin:5px auto" *ngIf="reveiwedResult == false"
+                                                [ngClass]="{ 'btn btn-secondary': link.bntStyle == null , 'btn btn-success' : link.bntStyle, 'btn btn-danger': !link.bntStyle}"
                                                 (click)="markReleIrrele($event,link, true)">
-                                                <!-- <img class="mb-2 rounded"
+                                                <img class="mb-2 rounded"
                                                     width="15" height="15" src="../../assets/images/like.png" /> <b
-                                                    style="font-size:10px;"> -->
-                                                    <!-- Relevant</b> -->Relevant
-                                                </mat-chip>
+                                                    style="font-size:10px;">
+                                                    Relevant</b>
+                                                </button>
                                             <span *ngIf="reveiwedResult == true && link.relevant == true">
                                                 <img src="../../assets/images/check.png" width="40" height="40">
                                             </span>
@@ -195,7 +195,7 @@
                             <div class="card p-4">
                                 <h2 style="
                                 margin-left: auto;
-                                margin-right: auto;">{{title}}</h2>
+                                margin-right: auto; color:rgba(0, 0, 255, 0.32)">{{title}}</h2>
                                 <!-- <p>{{content}}</p> -->
                                 <p class="mx-3" [innerHTML]="content | highlightSearch:keylist  : query:'highlighted-keyword':'highlighted-query'">
                                     {{content}}</p>

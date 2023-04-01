@@ -265,7 +265,7 @@ body {
 }
 
 ::ng-deep mark.highlighted-query {
-  background-color: rgb(188, 188, 74) !important;
+  background-color: rgb(234, 234, 174) !important;
   color: black !important;
 }
 
