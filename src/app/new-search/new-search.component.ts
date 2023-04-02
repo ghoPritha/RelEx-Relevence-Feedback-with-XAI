@@ -16,6 +16,7 @@ import {MatChipsModule} from '@angular/material/chips';
 export class NewSearchComponent implements OnInit {
   p: number = 1;
   imageSrc :string | undefined;
+  sourceImage = '/assets/images/Logo.png'
   imageAlt = "aa";
   public dataSource: any;
   public pageSize = 10;
@@ -51,6 +52,9 @@ export class NewSearchComponent implements OnInit {
   search(): void {
     if (this.query !== "") {
       this.queryTerm = this.query;
+      this.reveiwedResult = false
+      this.noOfSelected = 0
+
       this.showResult = true;
       this.searchResult = [];
       this.newSearchService.sendQuery(this.query).subscribe(response => {
@@ -93,7 +97,7 @@ export class NewSearchComponent implements OnInit {
     });
   }
   openWindow(link: ResultList): void {
-    // this.openNewTab = true;
+    this.openNewTab = true;
     this.title = link.title;
 
     this.keylist = link.KeyList;

@@ -7,8 +7,8 @@
     <div class="bootstrap snippets bootdey" [ngClass]="{'container': !showResult, 'top':showResult}">
         <div class="row">
             <div class="col-md-12 " style="margin-left: 0rem;">
-                <!-- <img *ngIf="!showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:150px; margin-left: auto;
-                    margin-right: auto;display: flex; margin-bottom: -80px" /> -->
+                <img *ngIf="!showResult" src="{{sourceImage}}"  style="height:150px; margin-left: auto;
+                    margin-right: auto;display: flex; margin-bottom: -80px" />
                 <div class="mask d-flex align-items-center h-100" *ngIf="!showResult">
                     <div class="container">
                         <div class="row">
@@ -181,9 +181,9 @@
 <div *ngIf="openNewTab">
     <div class="bg-image" style="height:605px!important">
         <div class="header-wrap--home  js-header-wrap m-4">
-            <!-- <button (click)="openNewTab = false" class="btn btn-info backBtn btn-lg pull-left">Go
+            <button (click)="openNewTab = false" class="btn btn-info backBtn btn-lg pull-left">Go
                 Back</button>
-             -->
+            
             <!-- <img *ngIf="showResult" src="{{imageSrc}}" alt="{{imageAlt}}" style="height:60px"
                 class="float-right mx-4" /> -->
         </div>
