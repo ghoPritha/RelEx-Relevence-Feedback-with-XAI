@@ -5,5 +5,6 @@ export interface ResultList {
     summary: string;
     KeyList: string[];
     bntStyle: boolean;
-    relevant: boolean
+    relevant: boolean;
+    relevanceToggleText: string
 }

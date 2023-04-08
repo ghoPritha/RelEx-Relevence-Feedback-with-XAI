@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatProgressBarModule } from '@angular/material/progress-bar' 
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatChipsModule} from '@angular/material/chips';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { CustomHttpInterceptorService } from './custom-http-interceptor.service';
@@ -56,7 +57,8 @@ const appRoutes: Routes = [
     MatButtonModule, 
     MatChipsModule,
     MatIconModule, 
-    MatBadgeModule
+    MatBadgeModule,
+    MatSlideToggleModule 
   ],
   exports: [RouterModule],
   providers: [

@@ -41,6 +41,12 @@ export class NewSearchComponent implements OnInit {
   noOfSelected: number = 0;
   bntStyle: any;
   reveiwedResult: boolean = false;
+  tooltipText : string = ''
+  selectedKeyList = new Map<string, string[]>();
+  // buttonText: string = 'Irrelevant'
+  relevantTooltip : string = 'This is the document you selected as relevant';
+  irrelevantTooltip : string = 'This is the document you left unselected as ireelevant';
+  // relevanceToggleText : string = 'Irrelevant'
   constructor(private domSanitizer: DomSanitizer, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
   }
@@ -60,12 +66,16 @@ export class NewSearchComponent implements OnInit {
       this.newSearchService.sendQuery(this.query).subscribe(response => {
         console.log("response", response);
         this.p = 1;
-        this.searchResult = response;
-        this.releIrrevenatList = this.searchResult
+        this.searchResult = response.slice(0, 10);
+        this.releIrrevenatList = response
         // this.searchResult = (<SearchResponse>response).resultList;
         // this.count = (<SearchResponse>response).count;
         // this.synonym = (<SearchResponse>response).synonymList;
         // this.totalSize = (<SearchResponse>response);
+        this.searchResult.forEach(each=>{
+          each.bntStyle = false;
+          each.relevanceToggleText = "Irrelevant"
+        })
       },
         err => console.error(err),
       );
@@ -137,30 +147,40 @@ export class NewSearchComponent implements OnInit {
       this.p = 1;
       this.reveiwedResult = true;
 
-      this.searchResult = response;
+      this.searchResult = response.slice(0, 10);;
       this.releIrrevenatList = this.searchResult
     },
       err => console.error(err),
     );
   }
 
-  highlightedText(text: string, keywords: string[], query: string) {
-    if (!text || !keywords || !query) {
-      return '';
+  fetchTooltipText(KeyList: string[]){
+    let matchedKey : string[] = [];
+
+    if(this.reveiwedResult){
+    KeyList.forEach(each=>{
+      console.log(each)
+      this.selectedKeyList.forEach((value, key) => {
+        value.forEach(element=>{
+          if (element === each) {
+            matchedKey.push(each)
+          }
+        })
+      });
+      // if(this.selectedKeyList.has(each)){
+      //   console.log(each)
+      //   matchedKey = each + ', '
+      // }
+    })
+    console.log(this.selectedKeyList, matchedKey, KeyList)
+    if(matchedKey.length > 0){
+      this.tooltipText = 'Keywords of this document such as ' + matchedKey.join(', ') + ' match with the keywords of the previously selected documents.'
     }
-
-    const regex = new RegExp(`(${keywords.join('|')})|(${query})`, 'gi');
-    const highlighted = text.replace(regex, (match, p1, p2) => {
-      if (p1) {
-        return `<span style='background-color:yellow'>${match}</span>`;
-      } else if (p2) {
-        return `<span style='background-color:purple'>${match}</span>`;
-      } else {
-        return match;
-      }
-    });
-
-    return highlighted;
+    else{
+      this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
+    }
+    }
+    
   }
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     // console.log(item, relevance)
@@ -181,12 +201,23 @@ export class NewSearchComponent implements OnInit {
           each.relevant = !each.relevant
         }
         if (each.relevant) {
+          item.relevanceToggleText = "Relevant"
           this.noOfSelected++;
           each.bntStyle = true;
+          this.selectedKeyList.set(each.docno, each.KeyList)
+          // console.log(this.selectedKeyList)
         }
         else {
+          item.relevanceToggleText = "Irrelevant"
           this.noOfSelected--;
           each.bntStyle = false;
+          // this.selectedKeyList.delete(each.docno)
+          // this.selectedKeyList.forEach((value, key) => {
+          //   if (value === each.) {
+          //     foundKey = key;
+          //   }
+          // });
+          // this.selectedKeyList.push(each.KeyList)
         }
       }
       else {
@@ -197,6 +228,7 @@ export class NewSearchComponent implements OnInit {
     }
     )
     console.log(this.releIrrevenatList)
+    // this.selectedKeyList.push
     // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
     // if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
     //   let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);

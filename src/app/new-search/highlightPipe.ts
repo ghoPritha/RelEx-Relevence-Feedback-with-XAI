@@ -31,7 +31,7 @@ export class HighlightSearchPipe implements PipeTransform {
     if (!text || !keywords || !query) {
       return text;
     }
-
+    
     let highlighted = text;
     keywords.forEach((keyword) => {
       if (keyword) {
