@@ -6,7 +6,8 @@ import { NewSearchService } from './new-search.service';
 import { ResultList } from './searchResponse';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
-import {MatChipsModule} from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-new-search',
@@ -15,7 +16,7 @@ import {MatChipsModule} from '@angular/material/chips';
 })
 export class NewSearchComponent implements OnInit {
   p: number = 1;
-  imageSrc :string | undefined;
+  imageSrc: string | undefined;
   sourceImage = '/assets/images/Logo.png'
   imageAlt = "aa";
   public dataSource: any;
@@ -41,21 +42,25 @@ export class NewSearchComponent implements OnInit {
   noOfSelected: number = 0;
   bntStyle: any;
   reveiwedResult: boolean = false;
-  tooltipText : string = ''
+  tooltipText: string = ''
   selectedKeyList = new Map<string, string[]>();
+  selectedKeyWords : string[] = [];
+
   // buttonText: string = 'Irrelevant'
-  relevantTooltip : string = 'This is the document you selected as relevant';
-  irrelevantTooltip : string = 'This is the document you left unselected as ireelevant';
+  relevantTooltip: string = 'This is the document you selected as relevant';
+  irrelevantTooltip: string = 'This is the document you left as irrelevant';
   // relevanceToggleText : string = 'Irrelevant'
-  constructor(private domSanitizer: DomSanitizer, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
+  constructor(private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
+
   }
 
   ngOnInit(): void {
 
   }
+  // Search the Query
 
-  search(): void {
+  onSearch(): void {
     if (this.query !== "") {
       this.queryTerm = this.query;
       this.reveiwedResult = false
@@ -72,7 +77,7 @@ export class NewSearchComponent implements OnInit {
         // this.count = (<SearchResponse>response).count;
         // this.synonym = (<SearchResponse>response).synonymList;
         // this.totalSize = (<SearchResponse>response);
-        this.searchResult.forEach(each=>{
+        this.searchResult.forEach(each => {
           each.bntStyle = false;
           each.relevanceToggleText = "Irrelevant"
         })
@@ -81,6 +86,111 @@ export class NewSearchComponent implements OnInit {
       );
     }
   }
+  // Marking the relevant irrelevant document
+  public markReleIrrele(event: any, item: any, relevance: boolean) {
+    // console.log(item, relevance)
+    // this.releIrreleselected = true;
+    let selectedDoc = {
+      docno: item.docno,
+      item: item,
+      relevant: relevance
+    };
+    this.releIrrevenatList.forEach((each) => {
+      if (each.docno == item.docno) {
+        if (each.relevant == null) {
+          console.log("empty", each.relevant, each.relevant == null, each.relevant == '')
+          each.relevant = relevance
+        }
+        else {
+          console.log("already has", each.relevant, each.relevant == null, each.relevant == '')
+          each.relevant = !each.relevant
+        }
+        if (each.relevant) {
+          item.relevanceToggleText = "Relevant"
+          this.noOfSelected++;
+          each.bntStyle = true;
+          this.selectedKeyList.set(each.docno, each.KeyList)
+          // console.log(this.selectedKeyList)
+        }
+        else {
+          item.relevanceToggleText = "Irrelevant"
+          this.noOfSelected--;
+          each.bntStyle = false;
+        }
+      }
+      else {
+        if (each.relevant == null) {
+          each.relevant = false
+        }
+      }
+    }
+    )
+    console.log(this.releIrrevenatList)
+    // this.selectedKeyList.push
+    // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
+    // if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
+    //   let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
+    //   this.releIrrevenatList[itemIndex] = selectedDoc;
+    // }
+    // else {
+    //   this.releIrrevenatList.forEach
+    //   this.releIrrevenatList.push(selectedDoc)
+    // }
+    if (this.noOfSelected >= 3) {
+      this.disableSubmit = false;
+    }
+    else {
+      this.disableSubmit = true
+    }
+    // console.log('releIrrevenatList', this.releIrrevenatList)
+  }
+
+
+  //Submit the feedback 
+  onSubmit() {
+    // console.log("response", this.releIrrevenatList);
+    if (this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant') {
+      this.openDialog('submit');
+    }
+    else {
+      this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
+        console.log("feedback response", response);
+        this.p = 1;
+        this.reveiwedResult = true;
+
+        this.searchResult = response.slice(0, 10);;
+        this.releIrrevenatList = this.searchResult
+        this.openBottomSheet()
+      },
+        err => console.error(err),
+      );
+    }
+  }
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(BottomSheetOverviewExampleSheet);
+  }
+
+  generatePlot() {
+    this.newSearchService.generatePlot().subscribe(response => {
+      console.log("search result", response);
+
+      const img = new Uint8Array(response);
+
+      const blob = new Blob([img], { type: 'image/png' });
+      console.log("search result", blob);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        this.imageSrc = reader.result as string;
+        console.log(this.imageSrc)
+        this.openPlotDialog();
+
+      };
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  //open dialog for "Select all as Relevant", "Select all as irrelevant"
   openDialog(eventName: string): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       data: {
@@ -114,143 +224,51 @@ export class NewSearchComponent implements OnInit {
     this.content = link.abstract;
   }
 
-  onChange(docId: any, isChecked: any): void {
-    // console.log(docId, isChecked.target.checked)
-    if (this.allSelectedLabel == 'relevant') {
-      this.releIrrevenatList.forEach((each) => {
-        each.relevant = true
-      }
-      )
-    }
-    else if (this.allSelectedLabel == 'irrelevant') {
-      this.releIrrevenatList.forEach((each) => {
-        each.relevant = false
+  fetchTooltipText(KeyList: string[]) {
+    let matchedKey: string[] = [];
+
+    if (this.reveiwedResult) {
+      KeyList.forEach(each => {
+        // console.log(each)
+        this.selectedKeyList.forEach((value, key) => {
+          value.forEach(element => {
+            if (element === each) {
+              matchedKey.push(each)
+            }
+          })
+        });
+        // if(this.selectedKeyList.has(each)){
+        //   console.log(each)
+        //   matchedKey = each + ', '
+        // }
       })
-    }
-    this.noOfSelected = 0
-  }
-
-  // handleChange($event: Event) {
-  //   console.log($event, $event.target)
-  //   this.allSelected = true
-  //   this.allSelectedLabel =  $event.target
-  // // throw new Error('Method not implemented.');
-  // }
-
-  onSubmit() {
-    // console.log("response", this.releIrrevenatList);
-    if (this.allSelectedLabel == 'relevant' || this.allSelectedLabel == 'irrelevant') {
-      this.openDialog('submit');
-    }
-    this.newSearchService.sendFeedback(this.releIrrevenatList).subscribe(response => {
-      console.log("response", response);
-      this.p = 1;
-      this.reveiwedResult = true;
-
-      this.searchResult = response.slice(0, 10);;
-      this.releIrrevenatList = this.searchResult
-    },
-      err => console.error(err),
-    );
-  }
-
-  fetchTooltipText(KeyList: string[]){
-    let matchedKey : string[] = [];
-
-    if(this.reveiwedResult){
-    KeyList.forEach(each=>{
-      console.log(each)
-      this.selectedKeyList.forEach((value, key) => {
-        value.forEach(element=>{
-          if (element === each) {
-            matchedKey.push(each)
-          }
-        })
-      });
-      // if(this.selectedKeyList.has(each)){
-      //   console.log(each)
-      //   matchedKey = each + ', '
-      // }
-    })
-    console.log(this.selectedKeyList, matchedKey, KeyList)
-    if(matchedKey.length > 0){
-      this.tooltipText = 'Keywords of this document such as ' + matchedKey.join(', ') + ' match with the keywords of the previously selected documents.'
-    }
-    else{
-      this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
-    }
-    }
-    
-  }
-  public markReleIrrele(event: any, item: any, relevance: boolean) {
-    // console.log(item, relevance)
-    // this.releIrreleselected = true;
-    let selectedDoc = {
-      docno: item.docno,
-      item: item,
-      relevant: relevance
-    };
-    this.releIrrevenatList.forEach((each) => {
-      if (each.docno == item.docno) {
-        if (each.relevant == null) {
-          console.log("empty", each.relevant, each.relevant == null, each.relevant == '')
-          each.relevant = relevance
-        }
-        else {
-          console.log("already has", each.relevant, each.relevant == null, each.relevant == '')
-          each.relevant = !each.relevant
-        }
-        if (each.relevant) {
-          item.relevanceToggleText = "Relevant"
-          this.noOfSelected++;
-          each.bntStyle = true;
-          this.selectedKeyList.set(each.docno, each.KeyList)
-          // console.log(this.selectedKeyList)
-        }
-        else {
-          item.relevanceToggleText = "Irrelevant"
-          this.noOfSelected--;
-          each.bntStyle = false;
-          // this.selectedKeyList.delete(each.docno)
-          // this.selectedKeyList.forEach((value, key) => {
-          //   if (value === each.) {
-          //     foundKey = key;
-          //   }
-          // });
-          // this.selectedKeyList.push(each.KeyList)
-        }
+      // console.log(this.selectedKeyList, matchedKey, KeyList)
+      if (matchedKey.length > 0) {
+        this.tooltipText = 'Keywords of this document such as "' + matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
       }
       else {
-        if (each.relevant == null) {
-          each.relevant = false
-        }
+        this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
       }
     }
-    )
-    console.log(this.releIrrevenatList)
-    // this.selectedKeyList.push
-    // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
-    // if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
-    //   let itemIndex = this.releIrrevenatList.findIndex(item => item.docno == selectedDoc.docno);
-    //   this.releIrrevenatList[itemIndex] = selectedDoc;
-    // }
-    // else {
-    //   this.releIrrevenatList.forEach
-    //   this.releIrrevenatList.push(selectedDoc)
-    // }
-    if (this.noOfSelected >= 3) {
-      this.disableSubmit = false;
-    }
-    else {
-      this.disableSubmit = true
-    }
-    // console.log('releIrrevenatList', this.releIrrevenatList)
-  }
-
-  showExplanattion(event: any, item: any) {
 
   }
 
+
+  // onChange(docId: any, isChecked: any): void {
+  //   // console.log(docId, isChecked.target.checked)
+  //   if (this.allSelectedLabel == 'relevant') {
+  //     this.releIrrevenatList.forEach((each) => {
+  //       each.relevant = true
+  //     }
+  //     )
+  //   }
+  //   else if (this.allSelectedLabel == 'irrelevant') {
+  //     this.releIrrevenatList.forEach((each) => {
+  //       each.relevant = false
+  //     })
+  //   }
+  //   this.noOfSelected = 0
+  // }
   // public markIrrele(event:any, item:any){
   //   let irrelevantDoc={
   //     docno : item.docno,
@@ -260,24 +278,7 @@ export class NewSearchComponent implements OnInit {
   //   console.log(event, item)
 
   // }
-  generatePlot() {
-    this.newSearchService.generatePlot().subscribe(response => {
-      console.log("search result", response);
 
-      const img = new Uint8Array(response);
-      
-      const blob = new Blob([img], { type: 'image/png' });
-      console.log("search result", blob);
-      const reader = new FileReader();
-        reader.onloadend = () => {
-          this.imageSrc = reader.result as string;
-          console.log(this.imageSrc)
-          this.openPlotDialog();
-
-        };
-        reader.readAsDataURL(blob);
-    });
-  }
 }
 
 @Component({
@@ -312,5 +313,19 @@ export class ShowPlotDialog {
   ) {
     this.imagesource = data.imagesource
     console.log(this.imagesource)
+  }
+}
+
+@Component({
+  selector: 'bottom-sheet-overview-example-sheet',
+  templateUrl: 'bottom-sheet-overview-example-sheet.html',
+})
+export class BottomSheetOverviewExampleSheet {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheetOverviewExampleSheet>) { }
+  panelOpenState = false;
+
+  openLink(event: MouseEvent): void {
+    this._bottomSheetRef.dismiss();
+    event.preventDefault();
   }
 }

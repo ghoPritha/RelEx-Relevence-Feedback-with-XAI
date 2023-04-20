@@ -19,8 +19,8 @@
                                             <input type="text" class="form-control form-control-lg rounded"
                                                 placeholder="Search for ...." aria-label="Type Keywords"
                                                 aria-describedby="basic-addon2" [(ngModel)]="query"
-                                                (keyup.enter)="search()" />
-                                            <button (click)="search()" type="submit" [disabled]="query === ''"
+                                                (keyup.enter)="onSearch()" />
+                                            <button (click)="onSearch()" type="submit" [disabled]="query === ''"
                                                 class="btn btn-outline-info btn-lg"><i class="fa fa-search"
                                                     style="font-size:20px"></i></button>
                                         </div>
@@ -35,16 +35,25 @@
                     *ngIf="spinnerService.visibility | async">
                 </mat-spinner>
                 <div *ngIf="spinnerService.visibility.value == false && showResult">
+                    <button *ngIf="reveiwedResult == true" mat-fab class="floating-icon" (click)="openBottomSheet()">
+                        <mat-icon>help_outline</mat-icon>
+                    </button>
+                    <!-- <button *ngIf="reveiwedResult == false" mat-fab class="floating-icon" class="btn btn-lg btn-rounded" (keyup.enter)="onSubmit()" type="button"
+                        [disabled]="disableSubmit" (click)="onSubmit()" matBadge="{{noOfSelected}}/3"
+                        [ngClass]="noOfSelected >= 3 ||allSelectedLabel != '' ? 'btn-success' : 'btn-secondary'">
+                        Submit Feedback
+                    </button> -->
                     <div class="bg-image">
                         <div class="row col-12">
                             <div class="col-8" style="margin-left:75px">
                                 <form action="#" method="get">
-                                    <div class="input-group"style="box-shadow: 10px 10px 10px grey;">
+                                    <div class="input-group" style="box-shadow: 10px 10px 10px grey;">
                                         <input type="text" placeholder="Search for..." name="search"
                                             class="form-control form-control-lg rounded" [(ngModel)]="query"
-                                            (keyup.enter)="search()">
-                                        <button (click)="search()" type="submit" class="btn btn-outline-info btn-lg"><i
-                                                class="fa fa-search" style="font-size:20px"></i></button>
+                                            (keyup.enter)="onSearch()">
+                                        <button (click)="onSearch()" type="submit"
+                                            class="btn btn-outline-info btn-lg"><i class="fa fa-search"
+                                                style="font-size:20px"></i></button>
                                         <!-- <div class="input-group-btn">
                                             <button class="btn btn-lg btn-info" type="submit" (keyup.enter)="search()"
                                                 [disabled]="disableSubmit" (click)="search()">
@@ -55,7 +64,7 @@
                                 </form>
                             </div>
                             <div *ngIf="reveiwedResult == true" class="col-3 align-self-start">
-                                <button style="border: none;margin:5px auto" class="btn btn-info"
+                                <button style="border: none;margin:5px auto" class="btn btn-success"
                                     (click)="generatePlot()"> <b>
                                         Explain Result</b></button>
                             </div>
@@ -90,7 +99,7 @@
                                     <b>irrelevant</b></label>
                             </div> -->
                     </div>
-                    <div class="col-10 mt-5" >
+                    <div class="col-10 mt-5">
                         <form style="margin-left:82px">
                             <div *ngFor="let link of searchResult;let i=index;">
                                 <!-- <button type="button" class="btn_img">
@@ -111,14 +120,18 @@
                                                         src="../../assets/images/thumb-down.png" /></button>
                                             </span> -->
                                         <div class="col-9 card-title">
-                                            <span [ngbTooltip]="reveiwedResult ? tooltipText : null"
+                                            <span [class.tooltip-wide]="true"
+                                                [ngbTooltip]="reveiwedResult ? tooltipText : null"
                                                 (mouseover)="fetchTooltipText(link.KeyList)">
                                                 <h3 class="mx-1 mt-2"><a (click)="openWindow(link);"
                                                         style="color:rgba(0, 0, 255, 0.32)">
                                                         {{link.title}}</a></h3>
                                             </span>
-                                            <p class="mx-1 card-text"
+                                            <p class="mx-1 card-text" *ngIf="reveiwedResult == false"
                                                 [innerHTML]="link.summary | highlightSearch:link.KeyList : query :'highlighted-keyword':'highlighted-query'">
+                                                {{link.summary}}</p>
+                                            <p class="mx-1 card-text" *ngIf="reveiwedResult == true"
+                                                [innerHTML]="link.summary | highlightQuery: link.docno : link.KeyList : selectedKeyList : 5">
                                                 {{link.summary}}</p>
                                             <!-- <p class="mx-3">
                                                     {{link.summary}}</p> -->
@@ -137,18 +150,22 @@
                                                 <i class="bi bi-hand-thumbs-up"></i> <b style="font-size:12px;">
                                                     {{buttonText}}</b>
                                             </button> -->
-                                        <mat-slide-toggle *ngIf="reveiwedResult == false"
-                                                (click)="markReleIrrele($event,link, true);" class="p-3"
-                                                style="float:right">{{link.relevanceToggleText}}</mat-slide-toggle>
+                                            <mat-slide-toggle *ngIf="reveiwedResult == false" class="p-3"
+                                                (click)="markReleIrrele($event,link, true);"
+                                                style="float:right"><b>{{link.relevanceToggleText}}</b></mat-slide-toggle>
 
                                             <span *ngIf="reveiwedResult == true && link.bntStyle == true">
-                                                <img style="margin-left: 70px!important" src="../../assets/images/check.png" width="30" height="30" [ngbTooltip]="relevantTooltip">
+                                                <img style="margin-left: 70px!important"
+                                                    src="../../assets/images/check.png" width="30" height="30"
+                                                    [class.tooltip-wide]="true" [ngbTooltip]="relevantTooltip">
                                                 <!-- <i class="bi bi-check" color="green"></i> -->
                                             </span>
-                                            <span *ngIf="reveiwedResult == true && link.bntStyle == false">
-                                                <img style="margin-left: 70px!important" src="../../assets/images/remove.png" width="30" height="30" [ngbTooltip]="irrelevantTooltip">
-                                                <!-- <i class="bi bi-x" color="red"></i> -->
-                                            </span>
+                                            <!-- <span *ngIf="reveiwedResult == true && link.bntStyle == false">
+                                                <img style="margin-left: 70px!important"
+                                                    src="../../assets/images/remove.png" width="30" height="30"
+                                                    [class.tooltip-wide]="true" [ngbTooltip]="irrelevantTooltip">
+                                                <i class="bi bi-x" color="red"></i>
+                                            </span> -->
                                         </span>
                                     </div>
                                 </div>

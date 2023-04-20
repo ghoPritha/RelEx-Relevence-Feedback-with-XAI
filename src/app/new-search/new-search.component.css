@@ -254,9 +254,24 @@ body {
     background-color: rgba(255, 255, 255, .35);
 }
 
-.highlight {
-    font-weight: bold;
+/* CSS class for highlighting the query */
+.highlight-query {
+  background-color: yellow; /* Change to the desired background color */
+  font-weight: bold; /* Change to the desired font weight */
 }
+
+/* CSS class for highlighting the keywords */
+.highlight-keyword {
+  background-color: cyan; /* Change to the desired background color */
+  font-weight: bold; /* Change to the desired font weight */
+}
+
+/* CSS class for highlighting the vicinity */
+.highlight-vicinity {
+  background-color: lightgreen; /* Change to the desired background color */
+  font-weight: normal; /* Change to the desired font weight */
+}
+
 
 ::ng-deep mark.highlighted-keyword {
   font-weight: bold;
@@ -265,7 +280,7 @@ body {
 }
 
 ::ng-deep mark.highlighted-query {
-  background-color: rgb(234, 234, 174) !important;
+  background-color: rgb(124, 138, 204) !important;
   color: black !important;
 }
 
@@ -410,23 +425,34 @@ body {
     color: green;
   }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: #4caf50; 
-  /* // green color */
-  
+  ::ng-deep .tooltip-inner {
+    width: 400px;
+    /* background-color: #FFFFFF; */
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-  background-color: #fff; 
-  /* // white color */
+.floating-icon {
+  position: fixed;
+  bottom: 20px; /* Adjust the distance from the bottom as needed */
+  right: 20px; /* Adjust the distance from the right as needed */
+  z-index: 9999; /* Adjust the z-index as needed to ensure it appears above other elements */
 }
 
-.mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-bar {
-  background-color: #ccc; 
-  /* // gray color */
+/* Default color for the slide toggle bar */
+::ng-deep .mat-slide-toggle-bar {
+  /* Change color to red */
+  background-color: red;
 }
 
-.mat-slide-toggle:not(.mat-checked) .mat-slide-toggle-thumb {
-  background-color: #f1f1f1; 
-  /* // light gray color */
+/* Color for the slide toggle bar when it is selected */
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+  /* Change color to green */
+  background-color: green!important;
 }
+::ng-deep .mat-slide-toggle .mat-slide-toggle-thumb {
+  /* Change color to green */
+  background-color: white!important;
+}
+
+
+
+

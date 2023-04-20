@@ -1,0 +1,66 @@
+<div class="bg-image m-4 bg justify-content-center align-items-center">
+
+    <h3>To make the relevance feedback understandable, you can follow these steps:</h3>
+    <mat-accordion>
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>star</mat-icon> &nbsp;&nbsp; Explain Result
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <div>1. Click on &nbsp;&nbsp;  <button
+                        style="border: none;margin:5px auto" class="btn btn-success" disabled> <b>
+                            Explain Result</b></button> button at the top right hand-side.</div>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <div>2. Pop-up shows a Scatterplot represntation of how the relevance feedback has effected the
+                        query vector. The revised query vector moves closer to the relevant documents based on two
+                        parameters -</div>
+                    <ul>
+                        <li>i. First the documents are passed through Cosine Similarity
+                            test
+                            between the revised query vector and each document vector.</li>
+                        <li>ii. Next the documents are re-ranked by matching the keywords
+                            of
+                            the selected documents.</li>
+                    </ul>
+                </mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>star</mat-icon> &nbsp;&nbsp; Tooltip on each doucment
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+                <mat-list-item role="listitem">1. Hover over each document title. &nbsp;
+                    <!-- <div><img style="margin-left: 70px!important" src="../../assets/images/tooltip.png" width="100"
+                            height="80"></div> -->
+                </mat-list-item>
+                <mat-list-item role="listitem">2. An explanation will be shown of which keywords from the selected
+                    relevant documents are matching with the current documents.</mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon>star</mat-icon> &nbsp;&nbsp; Originally chosen relevant, irrelevant document
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list role="list">
+                <mat-list-item role="listitem">1. &nbsp;<img style="margin-left: 70px!important"
+                        src="../../assets/images/check.png" width="30" height="30">&nbsp;&nbsp; Represents the document
+                    that was selected as 'Relevant'
+                </mat-list-item>
+                <mat-list-item role="listitem">2. &nbsp;<img style="margin-left: 70px!important"
+                        src="../../assets/images/remove.png" width="30" height="30">&nbsp;&nbsp; Represents the document
+                    that was selected as 'Irrelevant'
+                </mat-list-item>
+            </mat-list>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

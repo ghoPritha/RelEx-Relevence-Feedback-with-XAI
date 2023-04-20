@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NewSearchComponent } from './new-search/new-search.component';
+import { BottomSheetOverviewExampleSheet, NewSearchComponent } from './new-search/new-search.component';
 import { NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewSearchService } from './new-search/new-search.service';
@@ -25,6 +25,9 @@ import { HighlightQueryPipe } from './new-search/highlightQuery';
 import {MatIconModule} from '@angular/material/icon';
 import {MatBadgeModule} from '@angular/material/badge';
 import { HighlightComponent } from './highlight/highlight.component';
+import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -38,7 +41,8 @@ const appRoutes: Routes = [
     HighlightDirective,
     SpinnerComponent,
     HighlightQueryPipe,
-    HighlightComponent
+    HighlightComponent,
+    BottomSheetOverviewExampleSheet
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -58,7 +62,10 @@ const appRoutes: Routes = [
     MatChipsModule,
     MatIconModule, 
     MatBadgeModule,
-    MatSlideToggleModule 
+    MatSlideToggleModule ,
+    MatBottomSheetModule,
+    MatExpansionModule,
+    MatListModule
   ],
   exports: [RouterModule],
   providers: [
