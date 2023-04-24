@@ -454,5 +454,20 @@ body {
 }
 
 
+::ng-deep span.highlight-vicinity {
+  background-color: lightgreen !important; /* Change to the desired background color */
+}
+::ng-deep span.highlight-word2 {
+  /* background-color: lightgreen;  */
+  font-style: italic; /* Change to the desired font weight */
+}
 
+::ng-deep span.highlight-word1 {
+  /* background-color: lightgreen;  */
+  font-weight: bold; /* Change to the desired font weight */
+}
+a.hover{
+  text-decoration: underline;
+  cursor:pointer;
+ }
 

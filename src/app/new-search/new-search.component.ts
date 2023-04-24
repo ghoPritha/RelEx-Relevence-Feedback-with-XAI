@@ -9,6 +9,22 @@ import { BehaviorSubject } from 'rxjs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
+// import {
+//   ApexAxisChartSeries,
+//   ApexChart,
+//   ChartComponent,
+//   ApexDataLabels,
+//   ApexXAxis,
+//   ApexPlotOptions
+// } from "ng-apexcharts";
+
+// export type ChartOptions = {
+//   series: ApexAxisChartSeries;
+//   chart: ApexChart;
+//   dataLabels: ApexDataLabels;
+//   plotOptions: ApexPlotOptions;
+//   xaxis: ApexXAxis;
+// };
 @Component({
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
@@ -17,7 +33,7 @@ import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-shee
 export class NewSearchComponent implements OnInit {
   p: number = 1;
   imageSrc: string | undefined;
-  sourceImage = '/assets/images/Logo.png'
+  sourceImage = '/assets/images/logo.png'
   imageAlt = "aa";
   public dataSource: any;
   public pageSize = 10;
@@ -44,15 +60,67 @@ export class NewSearchComponent implements OnInit {
   reveiwedResult: boolean = false;
   tooltipText: string = ''
   selectedKeyList = new Map<string, string[]>();
-  selectedKeyWords : string[] = [];
+  selectedKeyWords: string[] = [];
+  matchedKey: string[] = [];
 
   // buttonText: string = 'Irrelevant'
   relevantTooltip: string = 'This is the document you selected as relevant';
   irrelevantTooltip: string = 'This is the document you left as irrelevant';
+  docNo: string = '';
+  // @ViewChild("chart") chart: ChartComponent | undefined;
+  // public chartOptions: Partial<ChartOptions>| any;
+  public barChartLegend = true;
+  public barChartPlugins = [];
+
+  // public barChartData: ChartConfiguration<'bar'>['data'] = {
+  //   labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+  //   datasets: [
+  //     { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
+  //     { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
+  //   ]
+  // };
+
+  // public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+  //   responsive: false,
+  // };
   // relevanceToggleText : string = 'Irrelevant'
   constructor(private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
 
+    // this.chartOptions = {
+    //   series: [
+    //     {
+    //       name: "basic",
+    //       data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+    //     }
+    //   ],
+    //   chart: {
+    //     type: "bar",
+    //     height: 350
+    //   },
+    //   plotOptions: {
+    //     bar: {
+    //       horizontal: true
+    //     }
+    //   },
+    //   dataLabels: {
+    //     enabled: false
+    //   },
+    //   xaxis: {
+    //     // categories: [
+    //     //   "South Korea",
+    //     //   "Canada",
+    //     //   "United Kingdom",
+    //     //   "Netherlands",
+    //     //   "Italy",
+    //     //   "France",
+    //     //   "Japan",
+    //     //   "United States",
+    //     //   "China",
+    //     //   "Germany"
+    //     // ]
+    //   }
+    // };
   }
 
   ngOnInit(): void {
@@ -86,6 +154,7 @@ export class NewSearchComponent implements OnInit {
       );
     }
   }
+
   // Marking the relevant irrelevant document
   public markReleIrrele(event: any, item: any, relevance: boolean) {
     // console.log(item, relevance)
@@ -170,7 +239,10 @@ export class NewSearchComponent implements OnInit {
   openBottomSheet(): void {
     this._bottomSheet.open(BottomSheetOverviewExampleSheet);
   }
-
+  openChart(link :any){
+    // console.log("this.chartOptions.series[0].xaxis",)
+    // this.chartOptions.series[0].xaxis.categories.push([link.KeyList]);
+  }
   generatePlot() {
     this.newSearchService.generatePlot().subscribe(response => {
       console.log("search result", response);
@@ -219,13 +291,12 @@ export class NewSearchComponent implements OnInit {
   openWindow(link: ResultList): void {
     this.openNewTab = true;
     this.title = link.title;
-
+    this.docNo = link.docno
     this.keylist = link.KeyList;
     this.content = link.abstract;
   }
 
   fetchTooltipText(KeyList: string[]) {
-    let matchedKey: string[] = [];
 
     if (this.reveiwedResult) {
       KeyList.forEach(each => {
@@ -233,7 +304,7 @@ export class NewSearchComponent implements OnInit {
         this.selectedKeyList.forEach((value, key) => {
           value.forEach(element => {
             if (element === each) {
-              matchedKey.push(each)
+              this.matchedKey.push(each)
             }
           })
         });
@@ -243,8 +314,8 @@ export class NewSearchComponent implements OnInit {
         // }
       })
       // console.log(this.selectedKeyList, matchedKey, KeyList)
-      if (matchedKey.length > 0) {
-        this.tooltipText = 'Keywords of this document such as "' + matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
+      if (this.matchedKey.length > 0) {
+        this.tooltipText = 'Keywords of this document such as "' + this.matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
       }
       else {
         this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'

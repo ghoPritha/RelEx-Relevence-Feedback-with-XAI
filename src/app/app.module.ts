@@ -28,6 +28,7 @@ import { HighlightComponent } from './highlight/highlight.component';
 import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
+import {MatTabsModule} from '@angular/material/tabs';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -65,7 +66,8 @@ const appRoutes: Routes = [
     MatSlideToggleModule ,
     MatBottomSheetModule,
     MatExpansionModule,
-    MatListModule
+    MatListModule,
+    MatTabsModule
   ],
   exports: [RouterModule],
   providers: [
