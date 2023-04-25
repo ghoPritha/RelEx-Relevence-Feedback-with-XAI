@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BottomSheetOverviewExampleSheet, NewSearchComponent } from './new-search/new-search.component';
+import { BottomSheetOverviewExampleSheet, NewSearchComponent, ShowChartExplanation } from './new-search/new-search.component';
 import { NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewSearchService } from './new-search/new-search.service';
@@ -29,6 +29,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
+import { BarChartComponentComponent } from './bar-chart-component/bar-chart-component.component';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -43,7 +44,9 @@ const appRoutes: Routes = [
     SpinnerComponent,
     HighlightQueryPipe,
     HighlightComponent,
-    BottomSheetOverviewExampleSheet
+    BottomSheetOverviewExampleSheet,
+    BarChartComponentComponent,
+    ShowChartExplanation
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -68,7 +71,7 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatListModule,
     MatTabsModule
-  ],
+    ],
   exports: [RouterModule],
   providers: [
   NewSearchService ,{

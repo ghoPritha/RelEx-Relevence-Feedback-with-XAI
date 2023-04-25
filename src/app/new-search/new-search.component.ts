@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AppConfigService } from '../app-config.service';
 import { SpinnerService } from '../spinner/spinner.service';
@@ -8,6 +8,8 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { Chart } from 'chart.js';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 // import {
 //   ApexAxisChartSeries,
@@ -62,29 +64,35 @@ export class NewSearchComponent implements OnInit {
   selectedKeyList = new Map<string, string[]>();
   selectedKeyWords: string[] = [];
   matchedKey: string[] = [];
+  chart: any;
 
   // buttonText: string = 'Irrelevant'
   relevantTooltip: string = 'This is the document you selected as relevant';
   irrelevantTooltip: string = 'This is the document you left as irrelevant';
   docNo: string = '';
-  // @ViewChild("chart") chart: ChartComponent | undefined;
-  // public chartOptions: Partial<ChartOptions>| any;
-  public barChartLegend = true;
-  public barChartPlugins = [];
+  single: any[] = [];
+  view: any[] = [700, 400];
 
-  // public barChartData: ChartConfiguration<'bar'>['data'] = {
-  //   labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
-  //   datasets: [
-  //     { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A' },
-  //     { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
-  //   ]
-  // };
+  // customize chart options
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Country';
+  showYAxisLabel = true;
+  yAxisLabel = 'Population';
+  showYAxis: any;
+  data: any;
+  showXAxis: any;
 
-  // public barChartOptions: ChartConfiguration<'bar'>['options'] = {
-  //   responsive: false,
-  // };
-  // relevanceToggleText : string = 'Irrelevant'
-  constructor(private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
+
+
+  onSelect(event: any) {
+    console.log(event);
+  }
+  constructor(private elementRef: ElementRef, private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
     // console.log(spinnerService.visibility.value)
 
     // this.chartOptions = {
@@ -122,8 +130,70 @@ export class NewSearchComponent implements OnInit {
     //   }
     // };
   }
-
+  canvas: any;
+  ctx: any;
   ngOnInit(): void {
+    this.canvas = document.getElementById('myChart');
+    console.log(this.canvas)
+    // this.ctx = this.canvas.getContext('2d');
+    var myChart = new Chart("myChart", {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'Data1',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: "#0196FD",
+          borderColor: "#0196FD",
+          borderWidth: 1
+        },
+        {
+          label: 'Dat21',
+          data: [19, 12, 5, 3, 1, 6],
+          backgroundColor: "#FFAF00",
+          borderColor: "#FFAF00",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        responsive: false,
+      }
+    });
+
+  }
+  ngAfterViewInit() {
+    this.canvas = document.getElementById('myChart');
+    console.log(this.canvas)
+    // this.ctx = this.canvas.getContext('2d');
+    var myChart = new Chart('myChart', {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: 'Data1',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: "#0196FD",
+          borderColor: "#0196FD",
+          borderWidth: 1
+        },
+        {
+          label: 'Dat21',
+          data: [19, 12, 5, 3, 1, 6],
+          backgroundColor: "#FFAF00",
+          borderColor: "#FFAF00",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        responsive: false,
+      }
+    });
 
   }
   // Search the Query
@@ -239,9 +309,49 @@ export class NewSearchComponent implements OnInit {
   openBottomSheet(): void {
     this._bottomSheet.open(BottomSheetOverviewExampleSheet);
   }
-  openChart(link :any){
-    // console.log("this.chartOptions.series[0].xaxis",)
-    // this.chartOptions.series[0].xaxis.categories.push([link.KeyList]);
+  // }
+  // @ViewChild('mychart')
+  // canvasRef!: ElementRef;
+  // ngAfterViewInit() {
+  //   setTimeout(() => {
+  //     const canvas = this.canvasRef.nativeElement;
+
+  //     this.chart = new Chart(this.canvasRef?.nativeElement, {
+  //       type: 'bar',
+  //       data: {
+  //         labels: this.labels,
+  //         datasets: [{
+  //           data: this.values,
+  //           backgroundColor: 'rgba(255, 99, 132, 0.2)',
+  //           borderColor: 'rgba(255, 99, 132, 1)',
+  //           borderWidth: 1
+  //         }]
+  //       },
+  //       options: {
+  //         scales: {
+
+  //         }
+  //       }
+  //     });
+  //   }, 0);
+  // }
+
+  openChart(link: any) {
+
+    const dialogRef = this.dialog.open(ShowChartExplanation, {
+      data: {
+        chartData: link,
+      },
+    });
+
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result.event == 'Cancel') {
+    //     this.allSelectedLabel = null;
+    //   } else if (result.event == 'Proceed') {
+    //     this.allSelectedLabel = null;
+    //     // this.openDialog('closed');
+    //   }
+    // });
   }
   generatePlot() {
     this.newSearchService.generatePlot().subscribe(response => {
@@ -399,4 +509,84 @@ export class BottomSheetOverviewExampleSheet {
     this._bottomSheetRef.dismiss();
     event.preventDefault();
   }
+}
+
+@Component({
+  selector: 'show-chart-explanation-dialog',
+  templateUrl: 'show-chart-explanation.html',
+})
+export class ShowChartExplanation {
+  canvas: any;
+  chartData: any;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.chartData = data.chartData
+
+
+    this.canvas = document.getElementById('myChart');
+    console.log(this.canvas)
+    // this.ctx = this.canvas.getContext('2d');
+    // var myChart = new Chart('myChart', {
+    //   type: 'bar',
+    //   data: {
+    //     labels: this.chartData.KeyList,
+    //     datasets: [{
+    //       label: 'Data1',
+    //       data: [12, 19, 3, 5, 2, 3],
+    //       backgroundColor: "#0196FD",
+    //       borderColor: "#0196FD",
+    //       borderWidth: 1
+    //     },
+    //     {
+    //       label: 'Dat21',
+    //       data: [19, 12, 5, 3, 1, 6],
+    //       backgroundColor: "#FFAF00",
+    //       borderColor: "#FFAF00",
+    //       borderWidth: 1
+    //     }]
+    //   },
+    //   options: {
+    //     legend: {
+    //       display: false
+    //     },
+    //     responsive: false,
+    //   }
+
+    // });
+  }
+
+  ngAfterViewInit() {
+    this.canvas = document.getElementById('myChart');
+    console.log(this.canvas)
+    // this.ctx = this.canvas.getContext('2d');
+    var myChart = new Chart('myChart', {
+      type: 'bar',
+      data: {
+        labels: this.chartData.KeyList,
+        datasets: [{
+          label: 'Data1',
+          data: [12, 19, 3, 5, 2, 3],
+          backgroundColor: "#0196FD",
+          borderColor: "#0196FD",
+          borderWidth: 1
+        }]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        responsive: false,
+      }
+    });
+
+  }
+  activeTabIndex: number = 0;
+  isChartVisible: boolean = true;
+
+  onTabChange(event: MatTabChangeEvent) {
+    this.activeTabIndex = event.index;
+    this.isChartVisible = (event.index === 1); // Change the condition as per your requirement
+  }
+
 }

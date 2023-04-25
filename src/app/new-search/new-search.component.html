@@ -1,3 +1,6 @@
+<!-- <div style="display:block">
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div> -->
 <div class="bg justify-content-center align-items-center" *ngIf="!openNewTab">
     <!-- <div class="header-wrap--home    js-header-wrap m-4">
         <button *ngIf="showResult" (click)="showResult = false" class="btn btn-primary backBtn btn-lg pull-left">Go
@@ -101,6 +104,7 @@
                     </div>
                     <!-- <div class="row col-6 mt-5 text-navy" style="margin-left:85px" *ngIf="reveiwedResult == false">
                     </div> -->
+
                     <div class="col-10 mt-5">
                         <form style="margin-left:82px">
                             <div *ngFor="let link of searchResult;let i=index;">
@@ -169,7 +173,13 @@
                                                 <i class="bi bi-x" color="red"></i>
                                             </span> -->
                                         </span>
-                                        <!-- <mat-accordion class="px-3" (click)="openChart(link)">
+                                        <mat-chip-list class="no-wrap px-2" *ngIf="reveiwedResult == true">
+                                            <mat-chip class="no-wrap" (click)="openChart(link)"><span><mat-icon
+                                                        class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
+                                                <span>Explanation</span>
+                                            </mat-chip>
+                                        </mat-chip-list>
+                                        <!-- <mat-accordion class="col-9 px-3" (click)="openChart(link)">
                                             <mat-expansion-panel hideToggle>
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title>
@@ -183,7 +193,6 @@
                                                                 *ngFor="let n of link.KeyList">{{n}}</mat-chip>
                                                         </mat-chip-list> </mat-tab>
                                                     <mat-tab label="Second">
-                                                            <canvas #chartCanvas></canvas>
                                                     </mat-tab>
                                                     <mat-tab label="Third"> Content 3 </mat-tab>
                                                 </mat-tab-group>
