@@ -267,11 +267,20 @@ body {
 }
 
 /* CSS class for highlighting the vicinity */
-.highlight-vicinity {
-  background-color: lightgreen; /* Change to the desired background color */
+::ng-deep span.highlight-vicinity {
+  background-color: lightgreen !important; /* Change to the desired background color */
   font-weight: normal; /* Change to the desired font weight */
 }
 
+::ng-deep span.highlight-word2 {
+  /* background-color: lightgreen;  */
+  font-style: italic; /* Change to the desired font weight */
+}
+
+::ng-deep span.highlight-word1 {
+  /* background-color: lightgreen;  */
+  font-weight: bold; /* Change to the desired font weight */
+}
 
 ::ng-deep mark.highlighted-keyword {
   font-weight: bold;
@@ -283,7 +292,10 @@ body {
   background-color: rgb(124, 138, 204) !important;
   color: black !important;
 }
-
+a.hover{
+  text-decoration: underline;
+  cursor:pointer;
+ }
 
 .highlight2 {
   color: rgb(238, 172, 50)!important
