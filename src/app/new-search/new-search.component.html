@@ -1,3 +1,4 @@
+<!-- < with explanation></with> -->
 <!-- <div style="display:block">
     <canvas id="myChart" width="400" height="400"></canvas>
 </div> -->
@@ -66,11 +67,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <div *ngIf="reveiwedResult == true" class="col-3 align-self-start">
-                                <button style="border: none;margin:5px auto" class="btn btn-success"
-                                    (click)="generatePlot()"> <b>
-                                        Explain Result</b></button>
-                            </div>
+
                         </div>
                         <!-- <div class="row col-12 my-4" style="margin-left:195px" *ngIf="reveiwedResult == false">
                             <h3 style="color:white">
@@ -81,7 +78,8 @@
                         </div> -->
                     </div>
 
-                    <div class="row col-6 mt-5 text-navy" style="margin-left:85px" *ngIf="reveiwedResult == false">
+                    <div class="row col-6 mt-5 text-navy" style="margin-left:85px;margin-bottom: -15px;"
+                        *ngIf="reveiwedResult == false">
                         <mat-radio-group aria-label="You can also choose " (change)="disableSubmit = false"
                             [(ngModel)]="allSelectedLabel" class="col-8 mx-4">
                             <mat-radio-button class="mr-5 " value="relevant">Select all as
@@ -102,10 +100,23 @@
                                     <b>irrelevant</b></label>
                             </div> -->
                     </div>
+                    <div *ngIf="reveiwedResult == true" class="row col-6 mt-3 align-self-start"
+                        style="margin-bottom: -15px;margin-left:85px">
+                        <!-- <button style="border: none;margin:5px auto" class="btn btn-success"
+                            (click)="generatePlot()"><mat-icon class="py-2"
+                                style="color: white;">assessment</mat-icon> <b>
+                                Explain Result</b></button> -->
+                        <mat-chip-list class="no-wrap px-2">
+                            <mat-chip class="no-wrap m-2" (click)="generatePlot()" style="background: green;
+                            color: white;"><span><mat-icon class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
+                                <span>Explain Result</span>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
                     <!-- <div class="row col-6 mt-5 text-navy" style="margin-left:85px" *ngIf="reveiwedResult == false">
                     </div> -->
 
-                    <div class="col-10 mt-5">
+                    <div class="col-10 mt-2">
                         <form style="margin-left:82px">
                             <div *ngFor="let link of searchResult;let i=index;">
                                 <!-- <button type="button" class="btn_img">
@@ -115,8 +126,8 @@
                                         <img src="../../assets/thumb-down.png" width="18" height="18">
                                     </button> -->
                                 <!-- <input type="checkbox" (change)="onChange(link.doc_id, $event)">box-shadow: 0 2px 4px rgba(0,0,0,.05); -->
-                                <div class="search-result card my-5 rounded"
-                                    style="cursor:pointer; border:none!important ; ">
+                                <div class="search-result card my-4 rounded"
+                                    style="border:none!important ; ">
 
                                     <div class="row">
                                         <!-- <span class="col-6">
@@ -130,8 +141,8 @@
                                             <span [class.tooltip-wide]="true"
                                                 [ngbTooltip]="reveiwedResult ? tooltipText : null">
                                                 <h3 class="mx-1 mt-2"><a disabled="true" (click)="openWindow(link);"
-                                                        style="color:rgb(5 5 121 / 57%);">
-                                                        {{link.title}}</a></h3>
+                                                        style="color:rgb(5 5 121 / 57%); cursor:pointer">
+                                                        <span style="color:rgba(5, 5, 121, 0.854);">[Doc id: {{link.docno}}]</span> {{link.title}} </a></h3>
                                             </span>
                                             <p class="mx-1 card-text" *ngIf="reveiwedResult == false"
                                                 [innerHTML]="link.summary | highlightSearch:link.KeyList : query :'highlighted-keyword':'highlighted-query'">
@@ -174,9 +185,15 @@
                                             </span> -->
                                         </span>
                                         <mat-chip-list class="no-wrap px-2" *ngIf="reveiwedResult == true">
-                                            <mat-chip class="no-wrap" (click)="openChart(link)"><span><mat-icon
+                                            <mat-chip class="no-wrap"
+                                                (click)="openChartForKeyword(link)"><span><mat-icon
                                                         class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
-                                                <span>Explanation</span>
+                                                <span>Key-Phrase explanation</span>
+                                            </mat-chip>
+                                            <mat-chip class="no-wrap"
+                                                (click)="openChartForContext(link)"><span><mat-icon
+                                                        class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
+                                                <span>Context Explanation</span>
                                             </mat-chip>
                                         </mat-chip-list>
                                         <!-- <mat-accordion class="col-9 px-3" (click)="openChart(link)">

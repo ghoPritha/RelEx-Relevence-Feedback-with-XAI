@@ -10,6 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Chart } from 'chart.js';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 // import {
 //   ApexAxisChartSeries,
@@ -63,7 +64,6 @@ export class NewSearchComponent implements OnInit {
   tooltipText: string = ''
   selectedKeyList = new Map<string, string[]>();
   selectedKeyWords: string[] = [];
-  matchedKey: string[] = [];
   chart: any;
 
   // buttonText: string = 'Irrelevant'
@@ -92,110 +92,20 @@ export class NewSearchComponent implements OnInit {
   onSelect(event: any) {
     console.log(event);
   }
-  constructor(private elementRef: ElementRef, private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
-    // console.log(spinnerService.visibility.value)
+  constructor(private _snackBar: MatSnackBar, private elementRef: ElementRef, private _bottomSheet: MatBottomSheet, public dialog: MatDialog, public spinnerService: SpinnerService, private appConfigService: AppConfigService, private newSearchService: NewSearchService) {
 
-    // this.chartOptions = {
-    //   series: [
-    //     {
-    //       name: "basic",
-    //       data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
-    //     }
-    //   ],
-    //   chart: {
-    //     type: "bar",
-    //     height: 350
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       horizontal: true
-    //     }
-    //   },
-    //   dataLabels: {
-    //     enabled: false
-    //   },
-    //   xaxis: {
-    //     // categories: [
-    //     //   "South Korea",
-    //     //   "Canada",
-    //     //   "United Kingdom",
-    //     //   "Netherlands",
-    //     //   "Italy",
-    //     //   "France",
-    //     //   "Japan",
-    //     //   "United States",
-    //     //   "China",
-    //     //   "Germany"
-    //     // ]
-    //   }
-    // };
   }
   canvas: any;
   ctx: any;
   ngOnInit(): void {
-    this.canvas = document.getElementById('myChart');
-    console.log(this.canvas)
-    // this.ctx = this.canvas.getContext('2d');
-    var myChart = new Chart("myChart", {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Data1',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: "#0196FD",
-          borderColor: "#0196FD",
-          borderWidth: 1
-        },
-        {
-          label: 'Dat21',
-          data: [19, 12, 5, 3, 1, 6],
-          backgroundColor: "#FFAF00",
-          borderColor: "#FFAF00",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        responsive: false,
-      }
-    });
-
+    this.openSnackBar('Please write down your specific query need in simple terms', 'Ok, Thanks!')
   }
-  ngAfterViewInit() {
-    this.canvas = document.getElementById('myChart');
-    console.log(this.canvas)
-    // this.ctx = this.canvas.getContext('2d');
-    var myChart = new Chart('myChart', {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: 'Data1',
-          data: [12, 19, 3, 5, 2, 3],
-          backgroundColor: "#0196FD",
-          borderColor: "#0196FD",
-          borderWidth: 1
-        },
-        {
-          label: 'Dat21',
-          data: [19, 12, 5, 3, 1, 6],
-          backgroundColor: "#FFAF00",
-          borderColor: "#FFAF00",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        responsive: false,
-      }
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 10000,
     });
-
   }
+  ngAfterViewInit() { }
   // Search the Query
 
   onSearch(): void {
@@ -219,6 +129,7 @@ export class NewSearchComponent implements OnInit {
           each.bntStyle = false;
           each.relevanceToggleText = "Irrelevant"
         })
+        this.openSnackBar('Select those documents you find relevant for your query by sliding the buttons on right side of each document', 'Ok, Thanks!')
       },
         err => console.error(err),
       );
@@ -298,7 +209,7 @@ export class NewSearchComponent implements OnInit {
         this.reveiwedResult = true;
 
         this.searchResult = response.slice(0, 10);;
-        this.releIrrevenatList = this.searchResult
+        // this.releIrrevenatList = this.searchResult
         this.openBottomSheet()
       },
         err => console.error(err),
@@ -336,12 +247,50 @@ export class NewSearchComponent implements OnInit {
   //   }, 0);
   // }
 
-  openChart(link: any) {
+  openChartForContext(link: any) {
 
     const dialogRef = this.dialog.open(ShowChartExplanation, {
       data: {
-        chartData: link,
+        chartData: link.Keyword_match_dict,
       },
+    });
+  }
+
+  openChartForKeyword(link: any) {
+    let KeyList = link.KeyList
+    let matchedKey:string[] = [];
+    if (this.reveiwedResult) {
+      KeyList.forEach((each: string) => {
+        // console.log(each)
+        this.selectedKeyList.forEach((value, key) => {
+          value.forEach(element => {
+            if (element === each) {
+              matchedKey.push(each)
+            }
+          })
+        });
+        // if(this.selectedKeyList.has(each)){
+        //   console.log(each)
+        //   matchedKey = each + ', '
+        // }
+      })
+      // console.log(this.selectedKeyList, matchedKey, KeyList)
+      // if (this.matchedKey.length > 0) {
+      //   this.tooltipText = 'Keywords of this document such as "' + this.matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
+      // }
+      // else {
+      //   this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
+      // }
+    }
+    console.log('matchedkey',this.selectedKeyList,KeyList, matchedKey)
+    const dialogRef = this.dialog.open(ShowKeyword, {
+      data: {
+        // chartData: link,
+        event: 'showKeyword',
+        keyList: matchedKey
+      },
+      panelClass: 'my-custom-dialog-class'
+
     });
 
     // dialogRef.afterClosed().subscribe(result => {
@@ -365,7 +314,7 @@ export class NewSearchComponent implements OnInit {
       reader.onloadend = () => {
         this.imageSrc = reader.result as string;
         console.log(this.imageSrc)
-        this.openPlotDialog();
+        this.openPlotDialog('showPlot');
 
       };
       reader.readAsDataURL(blob);
@@ -391,10 +340,11 @@ export class NewSearchComponent implements OnInit {
     });
   }
 
-  openPlotDialog(): void {
+  openPlotDialog(event: string): void {
     const dialogRef = this.dialog.open(ShowPlotDialog, {
       data: {
-        imagesource: this.imageSrc
+        imagesource: this.imageSrc,
+        event: event
       },
     });
   }
@@ -406,33 +356,33 @@ export class NewSearchComponent implements OnInit {
     this.content = link.abstract;
   }
 
-  fetchTooltipText(KeyList: string[]) {
+  // fetchTooltipText(KeyList: string[]) {
 
-    if (this.reveiwedResult) {
-      KeyList.forEach(each => {
-        // console.log(each)
-        this.selectedKeyList.forEach((value, key) => {
-          value.forEach(element => {
-            if (element === each) {
-              this.matchedKey.push(each)
-            }
-          })
-        });
-        // if(this.selectedKeyList.has(each)){
-        //   console.log(each)
-        //   matchedKey = each + ', '
-        // }
-      })
-      // console.log(this.selectedKeyList, matchedKey, KeyList)
-      if (this.matchedKey.length > 0) {
-        this.tooltipText = 'Keywords of this document such as "' + this.matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
-      }
-      else {
-        this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
-      }
-    }
+  //   if (this.reveiwedResult) {
+  //     KeyList.forEach(each => {
+  //       // console.log(each)
+  //       this.selectedKeyList.forEach((value, key) => {
+  //         value.forEach(element => {
+  //           if (element === each) {
+  //             this.matchedKey.push(each)
+  //           }
+  //         })
+  //       });
+  //       // if(this.selectedKeyList.has(each)){
+  //       //   console.log(each)
+  //       //   matchedKey = each + ', '
+  //       // }
+  //     })
+  //     // console.log(this.selectedKeyList, matchedKey, KeyList)
+  //     if (this.matchedKey.length > 0) {
+  //       this.tooltipText = 'Keywords of this document such as "' + this.matchedKey.join(', ') + '" match with the keywords of the previously selected documents.'
+  //     }
+  //     else {
+  //       this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
+  //     }
+  //   }
 
-  }
+  // }
 
 
   // onChange(docId: any, isChecked: any): void {
@@ -464,7 +414,7 @@ export class NewSearchComponent implements OnInit {
 
 @Component({
   selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog.html',
+  templateUrl: 'show_rele_irrele.html',
 })
 export class DialogOverviewExampleDialog {
   eventName: any;
@@ -489,11 +439,30 @@ export class DialogOverviewExampleDialog {
 })
 export class ShowPlotDialog {
   imagesource: any;
+  event: any;
+  keyList: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.imagesource = data.imagesource
+    this.event = data.event
+    this.keyList = data.keyList
     console.log(this.imagesource)
+  }
+}
+
+
+@Component({
+  selector: 'show-keyword',
+  templateUrl: 'show_keyword.html',
+})
+export class ShowKeyword {
+
+  keyList: any;
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+  ) {
+    this.keyList = data.keyList
   }
 }
 
@@ -517,12 +486,17 @@ export class BottomSheetOverviewExampleSheet {
 })
 export class ShowChartExplanation {
   canvas: any;
-  chartData: any;
+  keys_list: any;
+  value_list: any;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    this.chartData = data.chartData
+    console.log(data.chartData, Object.values(data.chartData))
+    this.keys_list = Object.keys(data.chartData)
 
+    this.value_list = Object.values(data.chartData)
+    console.log(typeof data, this.keys_list, this.value_list)
 
     this.canvas = document.getElementById('myChart');
     console.log(this.canvas)
@@ -558,15 +532,16 @@ export class ShowChartExplanation {
 
   ngAfterViewInit() {
     this.canvas = document.getElementById('myChart');
-    console.log(this.canvas)
+    // console.log('match', this.chartData.Keyword_match_dict)
+    // console.log(typeof this.chartData.Keyword_match_dict)
     // this.ctx = this.canvas.getContext('2d');
     var myChart = new Chart('myChart', {
       type: 'bar',
       data: {
-        labels: this.chartData.KeyList,
+        labels: this.keys_list,
         datasets: [{
           label: 'Data1',
-          data: [12, 19, 3, 5, 2, 3],
+          data: this.value_list,
           backgroundColor: "#0196FD",
           borderColor: "#0196FD",
           borderWidth: 1
@@ -589,4 +564,8 @@ export class ShowChartExplanation {
     this.isChartVisible = (event.index === 1); // Change the condition as per your requirement
   }
 
+}
+
+function list(arg0: any) {
+  throw new Error('Function not implemented.');
 }

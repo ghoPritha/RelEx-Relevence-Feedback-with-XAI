@@ -1,0 +1,17 @@
+<h2 mat-dialog-title>Hey! </h2>
+
+<div mat-dialog-content>
+  <div>
+    <label>You have selected all the documents as <b>{{data.name}}</b></label>
+    <br>
+    <p *ngIf="data.name == 'irrelevant'"> On proceed, you will be provided with a new set of documents to choose from.</p>
+    <label>Do you want to submit your response?</label>
+  </div>
+  <!-- <div *ngIf="eventName == 'showPlot'">
+    <img src="{{temp}}" />
+  </div> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button class="button-error"(click)="onNoClick()" mat-dialog-close>No, I want to change my response</button>
+  <button mat-button (click)="onYesClick()" class="button-success" mat-dialog-close cdkFocusInitial>Yes</button>
+</div>

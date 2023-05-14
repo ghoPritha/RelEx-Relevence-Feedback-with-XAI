@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BottomSheetOverviewExampleSheet, NewSearchComponent, ShowChartExplanation } from './new-search/new-search.component';
+import { BottomSheetOverviewExampleSheet, NewSearchComponent, ShowChartExplanation, ShowKeyword, ShowPlotDialog } from './new-search/new-search.component';
 import { NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NewSearchService } from './new-search/new-search.service';
@@ -29,7 +29,7 @@ import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
-import { BarChartComponentComponent } from './bar-chart-component/bar-chart-component.component';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -45,8 +45,9 @@ const appRoutes: Routes = [
     HighlightQueryPipe,
     HighlightComponent,
     BottomSheetOverviewExampleSheet,
-    BarChartComponentComponent,
-    ShowChartExplanation
+    ShowChartExplanation,
+    ShowPlotDialog,
+    ShowKeyword
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -62,7 +63,7 @@ const appRoutes: Routes = [
     MatProgressBarModule,
     MatDialogModule,
     MatRadioModule,
-    MatButtonModule, 
+    MatButtonModule,  
     MatChipsModule,
     MatIconModule, 
     MatBadgeModule,
@@ -70,7 +71,8 @@ const appRoutes: Routes = [
     MatBottomSheetModule,
     MatExpansionModule,
     MatListModule,
-    MatTabsModule
+    MatTabsModule,
+    MatSnackBarModule
     ],
   exports: [RouterModule],
   providers: [

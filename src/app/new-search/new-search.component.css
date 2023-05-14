@@ -85,7 +85,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        min-height: 230px;
+        min-height: 130px;
         padding: 0.5rem 1rem;
         text-align: center;
 
@@ -280,13 +280,13 @@ body {
 }
 
 ::ng-deep mark.highlighted-query {
-  background-color: rgb(124, 138, 204) !important;
+  background-color:  rgb(234, 230, 114)!important;
   color: black !important;
 }
 
 
 .highlight2 {
-  color: rgb(238, 172, 50)!important
+  color: rgb(207, 155, 60)!important
 }
 /* Customize the label (the container) */
 .container {
@@ -467,7 +467,10 @@ body {
   font-weight: bold; /* Change to the desired font weight */
 }
 a.hover{
-  text-decoration: underline;
+  text-decoration: underline !important;
   cursor:pointer;
  }
 
+ ::ng-deep .my-custom-dialog-class .mat-dialog-content {
+  overflow: hidden;
+}

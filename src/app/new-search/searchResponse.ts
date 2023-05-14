@@ -7,4 +7,5 @@ export interface ResultList {
     bntStyle: boolean;
     relevant: boolean;
     relevanceToggleText: string
+    docid: string
 }
