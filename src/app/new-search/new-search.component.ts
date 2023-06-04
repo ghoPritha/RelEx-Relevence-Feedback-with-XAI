@@ -54,7 +54,6 @@ export class NewSearchComponent implements OnInit {
   releIrrevenatList: any[] = [];
   queryTerm: any;
   // releIrreleselected: boolean = false;
-  allSelected: boolean = false
   allSelectedLabel: any = '';
   disableSubmit: boolean = true;
   keylist: string[] = [];
@@ -86,7 +85,8 @@ export class NewSearchComponent implements OnInit {
   showYAxis: any;
   data: any;
   showXAxis: any;
-
+  matched_contexts: string[] = [];
+  keyword_match_dict : any;
 
 
   onSelect(event: any) {
@@ -102,7 +102,7 @@ export class NewSearchComponent implements OnInit {
   }
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 10000,
+      duration: 5000,
     });
   }
   ngAfterViewInit() { }
@@ -148,11 +148,11 @@ export class NewSearchComponent implements OnInit {
     this.releIrrevenatList.forEach((each) => {
       if (each.docno == item.docno) {
         if (each.relevant == null) {
-          console.log("empty", each.relevant, each.relevant == null, each.relevant == '')
+          // console.log("empty", each.relevant, each.relevant == null, each.relevant == '')
           each.relevant = relevance
         }
         else {
-          console.log("already has", each.relevant, each.relevant == null, each.relevant == '')
+          // console.log("already has", each.relevant, each.relevant == null, each.relevant == '')
           each.relevant = !each.relevant
         }
         if (each.relevant) {
@@ -175,7 +175,7 @@ export class NewSearchComponent implements OnInit {
       }
     }
     )
-    console.log(this.releIrrevenatList)
+    // console.log(this.releIrrevenatList)
     // this.selectedKeyList.push
     // console.log(this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno))
     // if (this.releIrrevenatList.some((item) => item.docno == selectedDoc.docno)) {
@@ -256,10 +256,11 @@ export class NewSearchComponent implements OnInit {
     });
   }
 
-  openChartForKeyword(link: any) {
+  openChartForKeyword(link: any, event:any) {
     let KeyList = link.KeyList
     let matchedKey:string[] = [];
     if (this.reveiwedResult) {
+      if(KeyList != null)
       KeyList.forEach((each: string) => {
         // console.log(each)
         this.selectedKeyList.forEach((value, key) => {
@@ -286,7 +287,7 @@ export class NewSearchComponent implements OnInit {
     const dialogRef = this.dialog.open(ShowKeyword, {
       data: {
         // chartData: link,
-        event: 'showKeyword',
+        event: event,
         keyList: matchedKey
       },
       panelClass: 'my-custom-dialog-class'
@@ -333,9 +334,13 @@ export class NewSearchComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.event == 'Cancel') {
         this.allSelectedLabel = null;
+        this.disableSubmit = true
+        this.showResult = false
       } else if (result.event == 'Proceed') {
         this.allSelectedLabel = null;
-        // this.openDialog('closed');
+        this.showResult = false
+        this.disableSubmit = true
+        this.openChartForKeyword(null, 'showMessage')        // this.openDialog('closed');
       }
     });
   }
@@ -354,6 +359,8 @@ export class NewSearchComponent implements OnInit {
     this.docNo = link.docno
     this.keylist = link.KeyList;
     this.content = link.abstract;
+    this.matched_contexts = link.matched_contexts
+    this.keyword_match_dict = link.Keyword_match_dict
   }
 
   // fetchTooltipText(KeyList: string[]) {
@@ -457,12 +464,13 @@ export class ShowPlotDialog {
   templateUrl: 'show_keyword.html',
 })
 export class ShowKeyword {
-
+  event:any;
   keyList: any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     this.keyList = data.keyList
+    this.event = data.event
   }
 }
 
@@ -492,14 +500,14 @@ export class ShowChartExplanation {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    console.log(data.chartData, Object.values(data.chartData))
+    // console.log(data.chartData, Object.values(data.chartData))
     this.keys_list = Object.keys(data.chartData)
 
     this.value_list = Object.values(data.chartData)
-    console.log(typeof data, this.keys_list, this.value_list)
+    // console.log(typeof data, this.keys_list, this.value_list)
 
     this.canvas = document.getElementById('myChart');
-    console.log(this.canvas)
+    // console.log(this.canvas)
     // this.ctx = this.canvas.getContext('2d');
     // var myChart = new Chart('myChart', {
     //   type: 'bar',
@@ -540,7 +548,7 @@ export class ShowChartExplanation {
       data: {
         labels: this.keys_list,
         datasets: [{
-          label: 'Data1',
+          // label: 'Data1',
           data: this.value_list,
           backgroundColor: "#0196FD",
           borderColor: "#0196FD",

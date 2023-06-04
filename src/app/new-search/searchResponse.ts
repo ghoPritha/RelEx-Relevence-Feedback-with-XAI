@@ -7,5 +7,7 @@ export interface ResultList {
     bntStyle: boolean;
     relevant: boolean;
     relevanceToggleText: string
-    docid: string
+    docid: string;
+    matched_contexts: string[];
+    Keyword_match_dict: any
 }

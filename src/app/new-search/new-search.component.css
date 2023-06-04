@@ -262,14 +262,13 @@ body {
 
 /* CSS class for highlighting the keywords */
 .highlight-keyword {
-  background-color: cyan; /* Change to the desired background color */
+  /* background-color: cyan; Change to the desired background color */
   font-weight: bold; /* Change to the desired font weight */
 }
 
 /* CSS class for highlighting the vicinity */
 .highlight-vicinity {
-  background-color: lightgreen; /* Change to the desired background color */
-  font-weight: normal; /* Change to the desired font weight */
+  background-color: lightgreen !important; 
 }
 
 
@@ -455,16 +454,13 @@ body {
 
 
 ::ng-deep span.highlight-vicinity {
-  background-color: lightgreen !important; /* Change to the desired background color */
+  background-color: lightgreen !important;
 }
 ::ng-deep span.highlight-word2 {
-  /* background-color: lightgreen;  */
-  font-style: italic; /* Change to the desired font weight */
+  font-style: italic; 
 }
-
-::ng-deep span.highlight-word1 {
-  /* background-color: lightgreen;  */
-  font-weight: bold; /* Change to the desired font weight */
+::ng-deep span.highlight-keyword {
+  font-weight: bold; 
 }
 a.hover{
   text-decoration: underline !important;

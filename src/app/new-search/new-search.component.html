@@ -11,6 +11,7 @@
     <div class="bootstrap snippets bootdey" [ngClass]="{'container': !showResult, 'top':showResult}">
         <div class="row">
             <div class="col-md-12 " style="margin-left: 0rem;">
+                <h2  *ngIf="!showResult" style="text-align:center;">SYSTEM 2</h2>
                 <img *ngIf="!showResult" src="{{sourceImage}}" style="height:150px; margin-left: auto;
                     margin-right: auto;display: flex; margin-bottom: -80px" />
                 <div class="mask d-flex align-items-center h-100" *ngIf="!showResult">
@@ -38,7 +39,7 @@
                 <mat-spinner class="bee-spinner" style="margin:0 auto;top:160px" mode="indeterminate" [diameter]="150"
                     *ngIf="spinnerService.visibility | async">
                 </mat-spinner>
-                <div *ngIf="spinnerService.visibility.value == false && showResult">
+                <div *ngIf="spinnerService.visibility.value == false && showResult" class="mb-5">
                     <button *ngIf="reveiwedResult == true" mat-fab class="floating-icon" (click)="openBottomSheet()">
                         <mat-icon>help_outline</mat-icon>
                     </button>
@@ -117,7 +118,7 @@
                     </div> -->
 
                     <div class="col-10 mt-2">
-                        <form style="margin-left:82px">
+                        <form style="margin-left:102px">
                             <div *ngFor="let link of searchResult;let i=index;">
                                 <!-- <button type="button" class="btn_img">
                                         <img src="/assets/like.png" width="18" height="18">
@@ -137,7 +138,7 @@
                                                         src="../../assets/images/thumb-down.png" /></button>
                                             </span> 
                                                 (mouseover)="fetchTooltipText(link.KeyList)-->
-                                        <div class="col-9 card-title">
+                                        <div class="col-10 card-title">
                                             <span [class.tooltip-wide]="true"
                                                 [ngbTooltip]="reveiwedResult ? tooltipText : null">
                                                 <h3 class="mx-1 mt-2"><a disabled="true" (click)="openWindow(link);"
@@ -148,7 +149,7 @@
                                                 [innerHTML]="link.summary | highlightSearch:link.KeyList : query :'highlighted-keyword':'highlighted-query'">
                                                 {{link.summary}}</p>
                                             <p class="mx-1 card-text" *ngIf="reveiwedResult == true"
-                                                [innerHTML]="link.summary | highlightQuery: link.docno : link.KeyList : selectedKeyList : 5">
+                                                [innerHTML]="link.summary | highlightQuery:link.matched_contexts : link.KeyList : link.Keyword_match_dict ">
                                                 {{link.summary}}</p>
                                             <!-- <p class="mx-3">
                                                     {{link.summary}}</p> -->
@@ -160,14 +161,14 @@
                                                 </b> -->
                                         </div>
 
-                                        <span class="col-3 align-self-center">
+                                        <span class="col-2 align-self-center">
                                             <!-- <button style="border: none;margin:5px auto" *ngIf="reveiwedResult == false"
                                                 [ngClass]="{ 'btn-md btn-secondary btn-rounded ': link.bntStyle == null , 'btn-md btn-success btn-rounded' : link.bntStyle, 'btn-md btn-danger btn-rounded': !link.bntStyle}"
                                                 (click)="markReleIrrele($event,link, true); buttonText='Relevant'">
                                                 <i class="bi bi-hand-thumbs-up"></i> <b style="font-size:12px;">
                                                     {{buttonText}}</b>
                                             </button> -->
-                                            <mat-slide-toggle *ngIf="reveiwedResult == false" class="p-3"
+                                            <mat-slide-toggle *ngIf="reveiwedResult == false" class="p-1"
                                                 (click)="markReleIrrele($event,link, true);"
                                                 style="float:right"><b>{{link.relevanceToggleText}}</b></mat-slide-toggle>
 
@@ -186,7 +187,7 @@
                                         </span>
                                         <mat-chip-list class="no-wrap px-2" *ngIf="reveiwedResult == true">
                                             <mat-chip class="no-wrap"
-                                                (click)="openChartForKeyword(link)"><span><mat-icon
+                                                (click)="openChartForKeyword(link, 'showKeyword')"><span><mat-icon
                                                         class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
                                                 <span>Key-Phrase explanation</span>
                                             </mat-chip>
@@ -279,7 +280,7 @@
                                     [innerHTML]="content | highlightSearch:keylist  : query:'highlighted-keyword':'highlighted-query'">
                                     {{content}}</p>
                                 <p class="mx-3" *ngIf="reveiwedResult == true"
-                                    [innerHTML]="content | highlightQuery: docNo : keylist : selectedKeyList : 5">
+                                    [innerHTML]="content | highlightQuery:matched_contexts : keylist : keyword_match_dict">
                                     {{content}}</p>
                             </div>
                         </div>

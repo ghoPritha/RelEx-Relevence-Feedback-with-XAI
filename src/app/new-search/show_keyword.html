@@ -1,6 +1,12 @@
+
+<!-- <div *ngIf="event == 'showKeyword'"> -->
 <h2 mat-dialog-title>Following are a list of key-phrases that matched with the key-phrases of the selected documents</h2>
 <div mat-dialog-content>
     <mat-chip-list>
         <mat-chip *ngFor="let key of keyList">{{key}}</mat-chip>
     </mat-chip-list>
+<!-- </div> -->
 </div>
+<!-- <div *ngIf="event == 'showMessage'">
+    We are glad that you found all the documents
+</div> -->

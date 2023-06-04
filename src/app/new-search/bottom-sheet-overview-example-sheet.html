@@ -10,14 +10,16 @@
             </mat-expansion-panel-header>
             <mat-list role="list">
                 <mat-list-item role="listitem">
-                    <div>1. Click on &nbsp;&nbsp; <button style="border: none;margin:5px auto" class="btn btn-success"
-                            disabled> <b>
-                                Explain Result</b></button> button at the top right hand-side.</div>
+                    <div>1. Click on &nbsp;&nbsp; <mat-chip-list class="no-wrap px-2">
+                        <mat-chip class="no-wrap" style="background: green;
+                        color: white;"><span><mat-icon class="py-2">assessment</mat-icon></span> &nbsp;&nbsp;
+                            <span>Explain Result</span>
+                        </mat-chip>
+                    </mat-chip-list></div>
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <div>2. Pop-up shows a Scatterplot represntation of how the relevance feedback has effected the
-                        query vector. The revised query vector moves closer to the relevant documents based on two
-                        parameters -</div>
+                        query vector. The revised query vector moves closer to the relevant documents.</div>
                     <!-- <ul>
                         <li>i. First the documents are passed through Cosine Similarity
                             test
@@ -54,7 +56,7 @@
         <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <mat-icon>star</mat-icon> &nbsp;&nbsp; Originally chosen relevant, irrelevant document
+                    <mat-icon>star</mat-icon> &nbsp;&nbsp; Context explanation
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <mat-list role="list">
@@ -81,7 +83,7 @@
             </mat-expansion-panel-header>
             <mat-list role="list">
                 <mat-list-item role="listitem">
-                    <div></div>
+                    <div> Key-phrases that are present in the 5-word-vicinity are highlighted.</div>
                 </mat-list-item>
             </mat-list>
         </mat-expansion-panel>
