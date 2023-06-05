@@ -440,6 +440,7 @@ body {
 ::ng-deep .mat-slide-toggle-bar {
   /* Change color to red */
   background-color: red;
+  
 }
 
 /* Color for the slide toggle bar when it is selected */
@@ -469,4 +470,13 @@ a.hover{
 
  ::ng-deep .my-custom-dialog-class .mat-dialog-content {
   overflow: hidden;
+}
+
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, 
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background: #28a745!important;
+}
+
+::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+  background: #28a745!important;
 }

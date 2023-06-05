@@ -283,7 +283,12 @@ export class NewSearchComponent implements OnInit {
       //   this.tooltipText = 'Keywords of this document do not match with the keywords of the previously selected documents.'
       // }
     }
-    console.log('matchedkey',this.selectedKeyList,KeyList, matchedKey)
+    // console.log('before', matchedKey)
+    matchedKey = Array.from(matchedKey.reduce((m, t) => m.set(t, t), new Map()).values());
+    if(matchedKey.length <= 0){
+      matchedKey.push("None of the key phrases of this document matches")
+    }
+    // console.log('after', matchedKey)
     const dialogRef = this.dialog.open(ShowKeyword, {
       data: {
         // chartData: link,
@@ -334,13 +339,15 @@ export class NewSearchComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result.event == 'Cancel') {
         this.allSelectedLabel = null;
+        this.query = ''
         this.disableSubmit = true
         this.showResult = false
       } else if (result.event == 'Proceed') {
         this.allSelectedLabel = null;
+        this.query = ''
         this.showResult = false
         this.disableSubmit = true
-        this.openChartForKeyword(null, 'showMessage')        // this.openDialog('closed');
+        // this.openChartForKeyword(null, 'showMessage')        // this.openDialog('closed');
       }
     });
   }

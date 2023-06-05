@@ -30,6 +30,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatListModule} from '@angular/material/list';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 const appRoutes: Routes = [
   { path: '', component: NewSearchComponent },
@@ -72,7 +73,8 @@ const appRoutes: Routes = [
     MatExpansionModule,
     MatListModule,
     MatTabsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCheckboxModule
     ],
   exports: [RouterModule],
   providers: [
