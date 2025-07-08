@@ -172,9 +172,9 @@
                                             <!-- <mat-slide-toggle *ngIf="reveiwedResult == false" class="p-1"
                                                 (click)="markReleIrrele($event,link, true);"
                                                 style="float:right"><b>{{link.relevanceToggleText}}</b></mat-slide-toggle> -->
-                                            <mat-checkbox class="p-1" *ngIf="reveiwedResult == false"
+                                            <mat-checkbox class="p-1" *ngIf="reveiwedResult == false"[checked]="link.bntStyle"
                                                 (change)="markReleIrrele($event,link, true);">
-                                                {{link.relevanceToggleText}}
+                                                <b>Relevant</b>
                                             </mat-checkbox>
                                             <span *ngIf="reveiwedResult == true && link.bntStyle == true">
                                                 <img style="margin-left: 70px!important"

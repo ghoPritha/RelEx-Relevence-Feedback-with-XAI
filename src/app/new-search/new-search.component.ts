@@ -129,7 +129,7 @@ export class NewSearchComponent implements OnInit {
           each.bntStyle = false;
           each.relevanceToggleText = "Irrelevant"
         })
-        this.openSnackBar('Select those documents you find relevant for your query by sliding the buttons on right side of each document', 'Ok, Thanks!')
+        this.openSnackBar('Select those documents you find relevant for your query by selecting the checkboxes on right side of each document', 'Ok, Thanks!')
       },
         err => console.error(err),
       );
